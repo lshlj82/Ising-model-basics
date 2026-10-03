@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Ising Model, Interactively</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EDF1F4; --surface:#F8FAFC; --ink:#15202B; --muted:#56636F; --rule:#C5CFD7; --band:#E2E8ED;
+  --up:#1D2B45; --down:#F3F6F9; --par:#3A9BD5; --anti:#D9468F; --mf:#C8781A; --exact:#2E7A57; --mc:#2F4FC4; --res:#8B98A4;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E151C; --surface:#141D26; --ink:#E3E9EE; --muted:#97A4B0; --rule:#2B3743; --band:#1B2631;
+    --up:#E3E9EE; --down:#1E2A36; --par:#62B8EC; --anti:#F07AB5; --mf:#F0B45C; --exact:#5CC593; --mc:#7F9BFF; --res:#5B6976;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E151C; --surface:#141D26; --ink:#E3E9EE; --muted:#97A4B0; --rule:#2B3743; --band:#1B2631;
+  --up:#E3E9EE; --down:#1E2A36; --par:#62B8EC; --anti:#F07AB5; --mf:#F0B45C; --exact:#5CC593; --mc:#7F9BFF; --res:#5B6976;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:1.1rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+img,canvas{max-width:100%}
+a{color:var(--mc)}
+:focus-visible{outline:2px solid var(--mc);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+.prose{max-width:40rem}
+
+header.hero{padding:clamp(2.5rem,7vw,5rem) 0 1.5rem}
+.credit{font-family:var(--sans);font-size:.9rem;color:var(--muted);margin:0 0 1.25rem}
+h1{font-weight:500;font-size:clamp(2.5rem,7.5vw,5.25rem);line-height:.98;letter-spacing:-.025em;margin:0 0 1.25rem;max-width:12ch}
+.lede{font-size:clamp(1.15rem,2.2vw,1.35rem);max-width:37rem;margin:0}
+
+section{padding:clamp(2.5rem,6vw,4rem) 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:0;padding-top:1rem}
+h2{font-weight:500;font-size:clamp(1.7rem,3.5vw,2.35rem);line-height:1.1;letter-spacing:-.015em;margin:0 0 1rem}
+h3{font-family:var(--sans);font-weight:600;font-size:1rem;margin:1.75rem 0 .5rem}
+p{margin:0 0 1rem}
+.note{font-size:.95rem;color:var(--muted)}
+
+.eq{display:block;text-align:center;margin:1.25rem 0;overflow-x:auto;overflow-y:hidden;padding:.25rem 0}
+mjx-container{color:inherit}
+mjx-container[display="true"]{margin:0 !important}
+.stats mjx-container,.legend mjx-container,.cap mjx-container,.ctl small mjx-container{font-size:105%}
+.ctl output mjx-container{font-size:95%}
+.boxed{display:inline-block;border:1.5px solid var(--mc);padding:.5rem 1rem;border-radius:3px}
+
+.fig{display:grid;grid-template-columns:minmax(0,1fr) 17.5rem;gap:1.5rem;align-items:start;margin-top:1.5rem}
+@media (max-width:820px){.fig{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:1rem}
+.canvas-holder{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+canvas{display:block;width:100%}
+
+.ctl{font-family:var(--sans);font-size:.9rem;margin-bottom:1.1rem}
+.ctl:last-child{margin-bottom:0}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;font-weight:500;margin-bottom:.3rem}
+.ctl .lt{flex:1 1 auto}
+.ctl output{flex:0 0 auto;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:400}
+.ctl small{display:block;color:var(--muted);line-height:1.4;margin-top:.25rem}
+input[type=range]{width:100%;accent-color:var(--mc);margin:0}
+select{font-family:var(--sans);font-size:.9rem;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:.4rem .5rem;width:100%}
+.btns{display:flex;flex-wrap:wrap;gap:.5rem}
+button{font-family:var(--sans);font-size:.88rem;font-weight:500;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:4px;padding:.45rem .8rem;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:disabled{opacity:.5;cursor:progress}
+.check{display:flex;align-items:center;gap:.5rem;font-weight:500;cursor:pointer}
+.check input{width:1rem;height:1rem;margin:0;accent-color:var(--mc)}
+
+.stats{font-family:var(--sans);font-size:.9rem;display:grid;grid-template-columns:auto auto;gap:.35rem 1rem;margin:0}
+.stats dt{color:var(--muted)}
+.stats dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap}
+.stats .sep{grid-column:1/-1;border-top:1px solid var(--rule);margin:.3rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:1rem;margin:.6rem 0 0;align-items:center}
+.swatch{display:inline-block;width:.75rem;height:.75rem;border-radius:2px;vertical-align:-1px;margin-right:.35rem;border:1px solid var(--rule)}
+.swatch.line{height:3px;width:1.1rem;vertical-align:3px;border-radius:0;border:0}
+.swatch.dash{height:0;width:1.1rem;vertical-align:3px;border-radius:0;border:0;border-top:3px dashed}
+.swatch.dot{border-radius:50%;border:0}
+.cap{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin:.5rem .25rem 0}
+.verdict{font-family:var(--sans);font-size:1rem;font-weight:500;margin:.85rem 0 0;max-width:40rem}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.25rem}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+canvas.pix{image-rendering:pixelated}
+
+footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;font-family:var(--sans);font-size:.9rem;color:var(--muted)}
+footer p{margin:0 0 .4rem}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false }
+};
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="credit">An interactive demo created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee (Chapter 8, Section 8.2, The Ising Model of a Ferromagnet)</p>
+  <h1>The Ising Model</h1>
+  <p class="lede">Give each atomic dipole only one rule, prefer to point the same way as its neighbors, and a lattice of them can magnetize spontaneously below a critical temperature. The simplest model of interacting particles is also a gateway to phase transitions, critical exponents, and the renormalization group.</p>
+</header>
+
+<!-- ============ FERROMAGNETS ============ -->
+<section id="ferro" aria-labelledby="h-ferro">
+  <h2 id="h-ferro">Ferromagnets</h2>
+  <div class="prose">
+    <p>In an ideal paramagnet, each dipole responds only to an external field. In real materials, atomic dipoles are influenced by their neighbors: the energy depends on whether neighboring dipoles are parallel or antiparallel. When they prefer to align parallel, even with no external field, the material is a <strong>ferromagnet</strong> (iron is the most familiar example); when they prefer antiparallel, it is an <strong>antiferromagnet</strong> (Cr, NiO, FeO). The spontaneous, long-range order shows up as a net nonzero magnetization, which a paramagnet can’t have.</p>
+    <p>Raising the temperature causes random fluctuations that reduce the magnetization. For every ferromagnet there is a critical temperature, the <strong>Curie temperature</strong> (about 1043 K for iron), above which the net magnetization vanishes and the material becomes a paramagnet. Even below it, a piece of iron needn’t be magnetized: it breaks up into domains, each with billions of aligned dipoles but pointing in different directions. Heating it, applying a field, and cooling it again aligns the domains into a permanent magnet.</p>
+    <p>The Ising model describes a single domain. It keeps only the tendency of neighbors to align and assumes a preferred axis, so each dipole points either parallel or antiparallel to it. It is not an accurate model of a real ferromagnet at low temperature, where the quantum mechanics is subtler and the excitations are long-wavelength magnons, but it turns out to be much more accurate near the Curie temperature.</p>
+  </div>
+</section>
+
+<!-- ============ THE MODEL ============ -->
+<section id="model" aria-labelledby="h-model">
+  <h2 id="h-model">The model</h2>
+  <div class="prose">
+    <p>Let \(s_i = +1\) when dipole \(i\) points up and \(s_i = -1\) when it points down. A pair of neighboring dipoles contributes \(-\varepsilon\) when parallel and \(+\varepsilon\) when antiparallel, which is \(-\varepsilon s_i s_j\) in either case. The total energy, summed over neighboring pairs, and the partition function, summed over all sets of alignments, are</p>
+    <div class="eq">\[ U = -\varepsilon \sum_{\text{neighboring pairs } i,j} s_i s_j, \qquad Z = \sum_{\{s_i\}} e^{-\beta U} \]</div>
+    <p>With \(N\) dipoles, that sum has \(2^N\) terms, so brute force is hopeless for any real sample. For a 4 × 4 lattice, though, there are only \(2^{16} = 65{,}536\) states, few enough for the computer to add up exactly. Click dipoles to flip them; the dots mark parallel and antiparallel bonds (Problem 8.15).</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder" style="max-width:420px"><canvas id="latCanvas" tabindex="0" aria-label="A 4 by 4 lattice of dipoles; click or press Enter on a dipole to flip it"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch dot" style="background:var(--par)"></span>Parallel bond, \(-\varepsilon\)</span>
+        <span><span class="swatch dot" style="background:var(--anti)"></span>Antiparallel bond, \(+\varepsilon\)</span>
+      </div>
+      <p class="cap">Click a dipole to flip it. With the keyboard, use the arrow keys to move and Enter to flip.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl btns">
+        <button type="button" id="latFig">Figure 8.4</button>
+        <button type="button" id="latUp">All up</button>
+        <button type="button" id="latChk">Checkerboard</button>
+        <button type="button" id="latRnd">Random</button>
+      </div>
+      <dl class="stats">
+        <dt>Parallel bonds</dt><dd id="lP">–</dd>
+        <dt>Antiparallel bonds</dt><dd id="lA">–</dd>
+        <dt>Energy \(U\)</dt><dd id="lU">–</dd>
+      </dl>
+      <h3 style="margin-top:1.25rem">All 65,536 states at temperature \(T\)</h3>
+      <div class="ctl">
+        <label for="exT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="exTOut"></output></label>
+        <input type="range" id="exT" min="0.2" max="6" step="0.05" value="2.5">
+      </div>
+      <dl class="stats">
+        <dt>\(\langle U\rangle/\varepsilon\)</dt><dd id="exU">–</dd>
+        <dt>\(\langle |M|\rangle/N\)</dt><dd id="exM">–</dd>
+        <dt>\(C/k_{\mathrm{B}}\)</dt><dd id="exC">–</dd>
+        <dt>Probability of this state</dt><dd id="exP">–</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TWO DIPOLES ============ -->
+<section id="two" aria-labelledby="h-two">
+  <h2 id="h-two">Two dipoles</h2>
+  <div class="prose">
+    <p>Problem 8.17. With just two dipoles, the states \(\uparrow\uparrow\) and \(\downarrow\downarrow\) have energy \(-\varepsilon\), and \(\uparrow\downarrow\) and \(\downarrow\uparrow\) have \(+\varepsilon\), so</p>
+    <div class="eq">\[ Z = 2\left(e^{\beta\varepsilon} + e^{-\beta\varepsilon}\right) = 4\cosh\beta\varepsilon, \qquad P_{\text{parallel}} = \frac{1}{1 + e^{-2\beta\varepsilon}}, \qquad U = -\varepsilon\tanh\beta\varepsilon \]</div>
+    <p>Both dipoles pointing up is more likely than one up and one down when \(\tfrac12 P_{\text{parallel}} > P_{\text{antiparallel}}\), which works out to \(e^{2\beta\varepsilon} > 2\), that is \(T < 2\varepsilon/(k_{\mathrm{B}}\ln 2) \approx 2.885\,\varepsilon/k_{\mathrm{B}}\).</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="twoCanvas" aria-label="Probabilities and average energy of two coupled dipoles versus temperature"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch line" style="background:var(--par)"></span>\(P_{\text{parallel}}\)</span>
+        <span><span class="swatch line" style="background:var(--anti)"></span>\(P_{\text{antiparallel}}\)</span>
+        <span><span class="swatch dash" style="border-color:var(--ink)"></span>\(U/\varepsilon\) (right axis)</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label for="twoT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="twoTOut"></output></label>
+        <input type="range" id="twoT" min="0.1" max="10" step="0.05" value="2">
+      </div>
+      <dl class="stats">
+        <dt>\(P(\uparrow\uparrow)\)</dt><dd id="tw1">–</dd>
+        <dt>\(P(\uparrow\downarrow) + P(\downarrow\uparrow)\)</dt><dd id="tw2">–</dd>
+        <dt>\(U/\varepsilon\)</dt><dd id="tw3">–</dd>
+      </dl>
+      <p class="verdict" id="twV" style="font-size:.9rem"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1D ============ -->
+<section id="oned" aria-labelledby="h-oned">
+  <h2 id="h-oned">The exact solution in one dimension</h2>
+  <div class="prose">
+    <p>A real ferromagnet is three-dimensional and not exactly solvable, but the one-dimensional chain is. With \(U = -\varepsilon(s_1s_2 + s_2s_3 + \cdots + s_{N-1}s_N)\), the last sum gives \(\sum_{s_N = \pm1} e^{\beta\varepsilon s_{N-1}s_N} = 2\cosh\beta\varepsilon\) whatever \(s_{N-1}\) is, and so on down the chain:</p>
+    <div class="eq">\[ Z = 2^N\cosh^{N-1}(\beta\varepsilon) \approx \left(2\cosh\beta\varepsilon\right)^N, \qquad \bar{U} = -\frac{\partial}{\partial\beta}\ln Z = -N\varepsilon\tanh\beta\varepsilon \]</div>
+    <p>These are exactly the results for a two-state paramagnet, with \(\mu B\) replaced by \(\varepsilon\), except that here the dipoles line up with each other rather than with a field. As \(T \to 0\), \(\bar{U} \to -N\varepsilon\) (perfectly aligned); as \(T \to \infty\), \(\bar{U} \to 0\). The order sets in gradually, with no abrupt transition at any nonzero temperature: each dipole has only two neighbors, too few to sustain long-range order. The chain below runs the Metropolis algorithm described further down; the domains grow as it cools, but never take over completely.</p>
+  </div>
+  <div class="canvas-holder" style="margin-top:1.25rem"><canvas id="chainCanvas" class="pix" aria-label="A one-dimensional Ising chain evolving at the chosen temperature"></canvas></div>
+  <div class="fig" style="margin-top:1rem">
+    <div class="prose">
+      <p class="note" style="margin:0">Also note that the average dipole alignment is always \(\bar{s} = 0\), because flipping every dipole doesn’t change the energy. How can any Ising system then have \(\bar{s} \neq 0\)? The answer is <strong>spontaneous symmetry breaking</strong>, sketched in the mean-field section below. And the paramagnet’s \(M = -U/B\) doesn’t carry over either, since the probabilities of up and down are no longer that simple.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label for="chT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="chTOut"></output></label>
+        <input type="range" id="chT" min="0.3" max="4" step="0.05" value="1">
+      </div>
+      <div class="ctl btns"><button type="button" id="chPlay">Pause</button></div>
+      <dl class="stats">
+        <dt>\(\bar{U}/N\varepsilon\), exact</dt><dd id="chUe">–</dd>
+        <dt>\(\bar{U}/N\varepsilon\), this chain</dt><dd id="chUm">–</dd>
+        <dt>Typical domain size, exact</dt><dd id="chXi">–</dd>
+      </dl>
+      <p class="cap" style="margin:.75rem 0 0">Domain size here is the correlation length, \(-1/\ln\tanh\beta\varepsilon\), in units of the spacing. It is finite at every \(T > 0\). 600 dipoles, wrapped around.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEAN FIELD ============ -->
+<section id="mfa" aria-labelledby="h-mfa">
+  <h2 id="h-mfa">The mean-field approximation</h2>
+  <div class="prose">
+    <p>A very crude approximation can “solve” the Ising model in any dimension and shows why dimensionality matters. Focus on one dipole with \(n\) nearest neighbors (2 in one dimension, 4 on a square lattice, 6, 8, or 12 for simple, body-centered, or face-centered cubic). If \(\bar{s}\) is the average alignment of its neighbors, \(E_\uparrow = -\varepsilon n\bar{s}\) and \(E_\downarrow = +\varepsilon n\bar{s}\), so</p>
+    <div class="eq">\[ Z_i = 2\cosh(\beta\varepsilon n\bar{s}), \qquad \bar{s}_i = \tanh(\beta\varepsilon n\bar{s}) \]</div>
+    <p>Up to here this is exact. The approximation is to assume there are no fluctuations, so every neighborhood is typical and \(\bar{s}_i = \bar{s}\), the same idea used for the van der Waals equation:</p>
+    <div class="eq"><span class="boxed">\( \displaystyle \bar{s} = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
+    <p>Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
+    <div class="eq"><span class="boxed">\( \displaystyle k_{\mathrm{B}}T_c = n\varepsilon \)</span></div>
+    <p>proportional to \(\varepsilon\) and to \(n\): more neighbors take more thermal energy to disorder. In one dimension it predicts \(T_c = 2\varepsilon/k_{\mathrm{B}}\), which we know is wrong, but the approximation improves with dimension (it becomes exact above four). Problem 8.22 adds a field, giving each dipole \(\mp\mu_B B\) and \(\bar{s} = \tanh[\beta(\varepsilon n\bar{s} + \mu_B B)]\).</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="two" style="margin-top:0">
+        <div>
+          <div class="canvas-holder"><canvas id="gsCanvas" aria-label="Graphical solution of the mean-field self-consistency equation"></canvas></div>
+          <div class="legend">
+            <span><span class="swatch dot" style="background:var(--exact)"></span>Stable</span>
+            <span><span class="swatch dot" style="background:var(--anti)"></span>Unstable</span>
+          </div>
+        </div>
+        <div>
+          <div class="canvas-holder"><canvas id="pdCanvas" aria-label="Region of the temperature-field plane with three solutions"></canvas></div>
+          <p class="cap">Shaded: three solutions (two stable). Elsewhere: one.</p>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label for="mfT"><span class="lt">\(k_{\mathrm{B}}T/n\varepsilon\)</span> <output id="mfTOut"></output></label>
+        <input type="range" id="mfT" min="0.05" max="2" step="0.01" value="0.7">
+      </div>
+      <div class="ctl">
+        <label for="mfB"><span class="lt">\(\mu_B B/n\varepsilon\)</span> <output id="mfBOut"></output></label>
+        <input type="range" id="mfB" min="-1.2" max="1.2" step="0.01" value="0">
+      </div>
+      <dl class="stats" id="mfSol"></dl>
+      <p class="cap" style="margin:.75rem 0 0">With a field the three-solution region shrinks: it requires \(|\mu_B B| < n\varepsilon\), and that limit is reached only as \(T \to 0\).</p>
+    </div>
+  </div>
+
+  <h3>Near the critical point</h3>
+  <div class="prose">
+    <p>Problem 8.24. Using \(\tanh x \approx x - x^3/3\), the magnetization just below \(T_c\) is \(\bar{s} \approx \sqrt{3/T_c}\,(T_c - T)^{1/2}\), a critical exponent \(\beta = 1/2\). The susceptibility \(\chi = (\partial M/\partial B)_T\) diverges as \(\mu_B/k_{\mathrm{B}}(T - T_c)\) above \(T_c\) and half that below, so \(\gamma = 1\) on both sides. The exact exponents differ: \(\beta = 1/8\) and \(\gamma = 7/4\) in two dimensions (from Onsager’s solution), and \(\beta \approx 1/3\), \(\gamma \approx 1.24\) in three. Here is the mean-field magnetization for a square lattice (\(n = 4\), \(T_c = 4\varepsilon/k_{\mathrm{B}}\)) against Onsager’s exact result (\(T_c \approx 2.27\,\varepsilon/k_{\mathrm{B}}\)).</p>
+  </div>
+  <div class="two">
+    <div>
+      <div class="canvas-holder"><canvas id="mtCanvas" aria-label="Magnetization versus temperature, mean field versus exact"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch line" style="background:var(--mf)"></span>Mean field</span>
+        <span><span class="swatch line" style="background:var(--exact)"></span>Onsager (exact)</span>
+        <label class="check" style="font-size:.85rem"><input type="checkbox" id="mtLog"> Log-log near \(T_c\)</label>
+      </div>
+    </div>
+    <div>
+      <div class="canvas-holder"><canvas id="chiCanvas" aria-label="Mean-field susceptibility versus temperature"></canvas></div>
+      <p class="cap">Mean-field susceptibility, in units of \(\mu_B/\varepsilon\), with \(T\) in units of \(\varepsilon/k_{\mathrm{B}}\): \(1/(T-T_c)\) above, \(1/2(T_c-T)\) below.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MONTE CARLO ============ -->
+<section id="mc" aria-labelledby="h-mc">
+  <h2 id="h-mc">Monte Carlo simulation</h2>
+  <div class="prose">
+    <p>A 10 × 10 lattice already has \(2^{100} \approx 10^{30}\) states, impossible to enumerate. Sampling a million states at random wouldn’t work well either, since most would be irrelevant. The better idea is <strong>importance sampling</strong>, using the Boltzmann factors themselves as a guide. The <strong>Metropolis algorithm</strong> (1953): pick a dipole at random and compute the energy change \(\Delta U\) its flip would cause. If \(\Delta U \le 0\), flip it; if \(\Delta U > 0\), flip it with probability \(e^{-\Delta U/k_{\mathrm{B}}T}\). Repeat.</p>
+    <p>For two states 1 and 2 that differ by one flip, with \(U_1 \le U_2\), the transition probabilities are \(P(2\to1) = 1/N\) and \(P(1\to2) = (1/N)\,e^{-\beta(U_2-U_1)}\), so their ratio is exactly the ratio of Boltzmann factors. This detailed balance carries over to any sequence of steps, so states occur with the frequencies Boltzmann statistics demands. On a square lattice \(\Delta U = 2\varepsilon s_i(\text{sum of the four neighbors})\) takes only a few values, so the needed exponentials are computed in advance. The edges wrap around (periodic boundary conditions).</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="mcCanvas" class="pix" aria-label="Live Monte Carlo simulation of a two-dimensional Ising model"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--up)"></span>Up</span>
+        <span><span class="swatch" style="background:var(--down)"></span>Down</span>
+        <span id="mcInfo"></span>
+      </div>
+      <div class="canvas-holder" style="margin-top:.75rem"><canvas id="trCanvas" aria-label="Recent history of energy and magnetization"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch line" style="background:var(--mc)"></span>Magnetization per dipole</span>
+        <span><span class="swatch line" style="background:var(--mf)"></span>Energy per dipole, \(U/N\varepsilon\)</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label for="mcT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="mcTOut"></output></label>
+        <input type="range" id="mcT" min="0.5" max="5" step="0.01" value="2.27">
+        <small>Onsager’s exact \(T_c = 2/\ln(1+\sqrt{2}) \approx 2.269\).</small>
+        <div class="btns" style="margin-top:.5rem"><button type="button" id="mcTc" aria-pressed="false">Jump to \(T_c\)</button></div>
+      </div>
+      <div class="ctl">
+        <label for="mcB"><span class="lt">Field \(\mu_B B/\varepsilon\)</span> <output id="mcBOut"></output></label>
+        <input type="range" id="mcB" min="-1" max="1" step="0.01" value="0">
+      </div>
+      <div class="ctl">
+        <label for="mcL"><span class="lt">Lattice</span></label>
+        <select id="mcL">
+          <option value="45">45 × 45</option>
+          <option value="90">90 × 90</option>
+          <option value="180" selected>180 × 180</option>
+          <option value="270">270 × 270</option>
+        </select>
+      </div>
+      <div class="ctl">
+        <label for="mcS"><span class="lt">Sweeps per frame</span> <output id="mcSOut"></output></label>
+        <input type="range" id="mcS" min="0" max="4" step="1" value="1">
+      </div>
+      <div class="ctl btns">
+        <button type="button" id="mcPlay">Pause</button>
+        <button type="button" id="mcRand">Random start</button>
+        <button type="button" id="mcCold">All up</button>
+      </div>
+      <dl class="stats">
+        <dt>Sweeps</dt><dd id="mcSw">0</dd>
+        <dt>\(U/N\varepsilon\)</dt><dd id="mcE">–</dd>
+        <dt>\(M/N\)</dt><dd id="mcM">–</dd>
+        <dt>Onsager \(|M|/N\) at this \(T\)</dt><dd id="mcOn">–</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="prose note" style="margin-top:1.25rem">A sweep is \(N\) attempted flips. Try a random start at \(T = 1\): instead of reaching the fully magnetized state, the lattice often gets stuck in a metastable state with two large domains, since a state is probable but the path to it can take a very long time, as in a real magnet. Lower temperatures give larger clusters; near \(T_c\) there are clusters of all sizes, up to the size of the lattice.</p>
+
+  <h3>Measuring the thermodynamics</h3>
+  <div class="prose">
+    <p>The lecture’s Python code scans the temperature, equilibrates, and then averages the energy, magnetization, heat capacity, and susceptibility. This does the same in your browser on a smaller lattice, using fluctuations: \(C = (\langle U^2\rangle - \langle U\rangle^2)/k_{\mathrm{B}}T^2\) and \(\chi \propto (\langle M^2\rangle - \langle |M|\rangle^2)/k_{\mathrm{B}}T\).</p>
+  </div>
+  <div class="ctl btns" style="margin-top:1rem">
+    <button type="button" id="scanBtn">Run a temperature scan</button>
+    <span class="cap" id="scanStatus" style="margin:0;align-self:center"></span>
+  </div>
+  <div class="two">
+    <div class="canvas-holder"><canvas id="sc0" aria-label="Energy per dipole versus temperature"></canvas></div>
+    <div class="canvas-holder"><canvas id="sc1" aria-label="Magnetization per dipole versus temperature"></canvas></div>
+    <div class="canvas-holder"><canvas id="sc2" aria-label="Heat capacity per dipole versus temperature"></canvas></div>
+    <div class="canvas-holder"><canvas id="sc3" aria-label="Susceptibility per dipole versus temperature"></canvas></div>
+  </div>
+  <p class="cap">A 24 × 24 lattice, 33 temperatures, 600 sweeps to equilibrate and 1500 to measure at each. Green: Onsager’s exact magnetization. The peaks sharpen with larger lattices, toward the true divergences at \(T_c\).</p>
+</section>
+
+<!-- ============ CLUSTERS ============ -->
+<section id="clusters" aria-labelledby="h-clusters">
+  <h2 id="h-clusters">Correlations and scale invariance</h2>
+  <div class="prose">
+    <p>Problem 8.29 quantifies clustering with the correlation function: for dipoles a distance \(r\) apart,</p>
+    <div class="eq">\[ c(r) = \overline{s_i s_j} - \bar{s}^2 \propto e^{-r/\xi} \]</div>
+    <p>where \(\xi\) is the correlation length. At \(T = T_c\), \(\xi \to \infty\): there is no characteristic scale, and near \(T_c\) it follows a power law, \(\xi \sim |T - T_c|^{-\nu}\). This is computed from the live simulation above, averaged over all pairs along rows and columns.</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="crCanvas" aria-label="Correlation function of the current simulation state"></canvas></div>
+    </div>
+    <div class="panel">
+      <dl class="stats">
+        <dt>Temperature</dt><dd id="crT">–</dd>
+        <dt>Correlation length \(\xi\)</dt><dd id="crXi">–</dd>
+      </dl>
+      <p class="cap" style="margin:.75rem 0 0">\(\xi\) is where \(c(r)\) falls to \(1/e\) of \(c(0)\). It is a snapshot of the current state, so it fluctuates; near \(T_c\) it is limited only by the size of the lattice.</p>
+    </div>
+  </div>
+
+  <h3>Block spins and the renormalization group</h3>
+  <div class="prose">
+    <p>Problem 8.32. Divide the lattice into 3 × 3 blocks and replace each by a single dipole that follows the majority rule. The new lattice is a third as wide, and it looks like an Ising lattice at a different temperature. Away from \(T_c\), repeating the transformation drives the system toward one of the trivial fixed points, zero or infinite temperature. At \(T_c\), the system is invariant under the transformation, because of its scale-free nature: the critical point is itself a fixed point. Averaging away the small-scale details leaves the critical behavior unchanged, which is why very different systems, such as magnets and fluids near their critical points, share the same critical exponents. This is one version of the renormalization group, for which Kenneth Wilson received the 1982 Nobel Prize in Physics.</p>
+  </div>
+  <div class="two">
+    <div>
+      <div class="canvas-holder"><canvas id="bs1" class="pix" aria-label="The lattice after one block-spin transformation"></canvas></div>
+      <p class="cap" id="bs1c">After one block-spin transformation.</p>
+    </div>
+    <div>
+      <div class="canvas-holder"><canvas id="bs2" class="pix" aria-label="The lattice after two block-spin transformations"></canvas></div>
+      <p class="cap" id="bs2c">After two.</p>
+    </div>
+  </div>
+  <p class="prose note" style="margin-top:1.25rem">Set the simulation above to 270 × 270 and compare: well below \(T_c\) the blocks become more uniform (lower effective temperature), well above \(T_c\) they become more random (higher), and near \(T_c\) they look statistically the same as the original.</p>
+</section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on systems of interacting particles (Section 8.2, The Ising Model of a Ferromagnet, with Problems 8.15, 8.17, 8.18, 8.22, 8.24, 8.29 and 8.32).</p>
+    <p>Temperatures are in units of \(\varepsilon/k_{\mathrm{B}}\). The Monte Carlo engine is a straightforward Metropolis implementation with periodic boundaries. Equations typeset with MathJax.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let C = {};
+function readColors(){
+  const cs = getComputedStyle(document.documentElement);
+  ['bg','surface','ink','muted','rule','band','up','down','par','anti','mf','exact','mc','res'].forEach(k => C[k] = cs.getPropertyValue('--'+k).trim());
+}
+readColors();
+const SANS = '"Instrument Sans", system-ui, sans-serif';
+const SERIF = '"Newsreader", Georgia, serif';
+function fit(cv, LW, LH){
+  const w = cv.parentElement.clientWidth || LW, hgt = w*LH/LW;
+  cv.style.height = hgt + 'px';
+  const d = window.devicePixelRatio || 1;
+  cv.width = Math.round(w*d); cv.height = Math.round(hgt*d);
+  const ctx = cv.getContext('2d'); const s = w*d/LW;
+  ctx.setTransform(s,0,0,s,0,0);
+  return ctx;
+}
+function rich(c, x, y, size, parts, align){
+  c.save(); c.textAlign = 'left';
+  const fontOf = st => st==='i' ? 'italic '+size+'px '+SERIF : st==='isub' ? 'italic '+(size*0.7)+'px '+SERIF : (st==='sub'||st==='sup') ? (size*0.7)+'px '+SERIF : st==='s' ? (size*0.88)+'px '+SANS : size+'px '+SERIF;
+  const widths = parts.map(([t,st]) => { c.font = fontOf(st); return c.measureText(t).width; });
+  const total = widths.reduce((a,b)=>a+b,0);
+  let cx = align==='center' ? x-total/2 : align==='right' ? x-total : x;
+  parts.forEach(([t,st],i) => { c.font = fontOf(st); const dy = (st==='sub'||st==='isub') ? size*0.25 : st==='sup' ? -size*0.38 : 0; c.fillText(t, cx, y+dy); cx += widths[i]; });
+  c.restore(); return total;
+}
+function signed(x,d){ return (x<0?'−':'') + Math.abs(x).toFixed(d); }
+function hexRGB(col){ // accepts #rrggbb
+  const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(col.trim()); return m ? [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)] : [128,128,128];
+}
+const TC_ONS = 2/Math.log(1+Math.SQRT2);
+const onsagerM = T => T >= TC_ONS ? 0 : Math.pow(1 - Math.pow(Math.sinh(2/T), -4), 1/8);
+// generic chart axes
+function axes(c, W, H, box, xr, yr, xt, yt, xlab, ylab, xfmt, yfmt){
+  const [L,T,R,B] = box;
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  const X = v => L + (v-xr[0])/(xr[1]-xr[0])*(W-L-R), Y = v => H-B - (v-yr[0])/(yr[1]-yr[0])*(H-T-B);
+  c.font='12px '+SANS; c.fillStyle=C.muted; c.textAlign='center';
+  xt.forEach(v => { c.strokeStyle=C.band; c.lineWidth=1; c.beginPath(); c.moveTo(X(v),T); c.lineTo(X(v),H-B); c.stroke(); c.fillText(xfmt ? xfmt(v) : String(v), X(v), H-B+16); });
+  c.textAlign='right'; yt.forEach(v => { c.strokeStyle = v===0 ? C.rule : C.band; c.beginPath(); c.moveTo(L,Y(v)); c.lineTo(W-R,Y(v)); c.stroke(); c.fillText(yfmt ? yfmt(v) : (Number.isInteger(v) ? signed(v,0) : (v<0?'−':'')+String(Math.abs(v))), L-6, Y(v)+4); });
+  c.fillStyle=C.muted; if (xlab) rich(c, W-R-2, H-8, 14, xlab, 'right');
+  if (ylab){ c.save(); c.font='14px '+SERIF; c.globalAlpha=0.85; c.fillStyle=C.surface; c.fillRect(L+2, T-2, 150, 20); c.restore(); c.fillStyle=C.muted; rich(c, L+6, T+12, 14, ylab, 'left'); }
+  c.strokeStyle=C.muted; c.lineWidth=1; c.beginPath(); c.moveTo(L,T); c.lineTo(L,H-B); c.lineTo(W-R,H-B); c.stroke();
+  return {X, Y};
+}
+const kTlab = [['k','i'],['B','sub'],['T','i'],[' / ','r'],['ε','i']];
+
+/* ================= 4x4 LATTICE + EXACT ENUMERATION ================= */
+const FIG84 = [[-1,-1,1,-1],[1,1,1,1],[-1,1,1,1],[-1,-1,-1,1]];
+let lat = FIG84.map(r => r.slice()), cur = [0,0];
+function bonds(g){
+  let p = 0, a = 0;
+  for (let i=0;i<4;i++) for (let j=0;j<4;j++){ if (j<3){ g[i][j]===g[i][j+1] ? p++ : a++; } if (i<3){ g[i][j]===g[i+1][j] ? p++ : a++; } }
+  return {p, a, U: a - p};
+}
+// enumerate all 2^16 states: histogram over (U, M)
+const HIST = new Map();
+(function(){
+  for (let m=0;m<65536;m++){
+    const g = []; for (let i=0;i<4;i++){ g.push([]); for (let j=0;j<4;j++) g[i].push((m>>(4*i+j))&1 ? 1 : -1); }
+    const {U} = bonds(g); let M = 0; g.forEach(r => r.forEach(v => M += v));
+    const key = U + ',' + M; HIST.set(key, (HIST.get(key)||0) + 1);
+  }
+})();
+let exT = 2.5;
+function latRender(){
+  const {p, a, U} = bonds(lat);
+  $('lP').textContent = p; $('lA').textContent = a; $('lU').innerHTML = (U===0 ? '0' : signed(U,0) + 'ε');
+  // exact thermodynamics at exT
+  let Z=0, Us=0, U2=0, Ma=0, Umin=-24;
+  HIST.forEach((cnt, key) => { const [u, m] = key.split(',').map(Number); const w = cnt*Math.exp(-(u - Umin)/exT); Z += w; Us += w*u; U2 += w*u*u; Ma += w*Math.abs(m); });
+  const Um = Us/Z, Cv = (U2/Z - Um*Um)/(exT*exT);
+  $('exTOut').textContent = exT.toFixed(2);
+  $('exU').textContent = signed(Um, 2); $('exM').textContent = (Ma/Z/16).toFixed(3); $('exC').textContent = Cv.toFixed(2);
+  const pr = Math.exp(-(U - Umin)/exT)/Z;
+  $('exP').innerHTML = pr >= 1e-3 ? pr.toPrecision(3) : pr.toExponential(1).replace(/e([+-]\d+)/, (m,e) => ' × 10<sup>' + e.replace('-','−').replace('+','') + '</sup>');
+  const c = latCtx; if (!c) return;
+  const W=400, H=400, m=30, cell=(W-2*m)/4;
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  c.strokeStyle=C.rule; c.lineWidth=1.5;
+  for (let k=0;k<=4;k++){ c.beginPath(); c.moveTo(m+k*cell, m); c.lineTo(m+k*cell, m+4*cell); c.stroke(); c.beginPath(); c.moveTo(m, m+k*cell); c.lineTo(m+4*cell, m+k*cell); c.stroke(); }
+  // bond dots
+  for (let i=0;i<4;i++) for (let j=0;j<4;j++){
+    const cx = m + (j+0.5)*cell, cy = m + (i+0.5)*cell;
+    if (j<3){ c.fillStyle = lat[i][j]===lat[i][j+1] ? C.par : C.anti; c.beginPath(); c.arc(cx + cell/2, cy, 8, 0, 7); c.fill(); }
+    if (i<3){ c.fillStyle = lat[i][j]===lat[i+1][j] ? C.par : C.anti; c.beginPath(); c.arc(cx, cy + cell/2, 8, 0, 7); c.fill(); }
+  }
+  // arrows
+  for (let i=0;i<4;i++) for (let j=0;j<4;j++){
+    const cx = m + (j+0.5)*cell, cy = m + (i+0.5)*cell, s = lat[i][j], len = cell*0.32;
+    c.strokeStyle=C.ink; c.fillStyle=C.ink; c.lineWidth=3;
+    c.beginPath(); c.moveTo(cx, cy + s*len); c.lineTo(cx, cy - s*len*0.55); c.stroke();
+    c.beginPath(); c.moveTo(cx, cy - s*len); c.lineTo(cx-8, cy - s*len*0.45); c.lineTo(cx+8, cy - s*len*0.45); c.closePath(); c.fill();
+  }
+  if (document.activeElement === $('latCanvas')){ c.strokeStyle=C.mc; c.lineWidth=3; c.strokeRect(m+cur[1]*cell+3, m+cur[0]*cell+3, cell-6, cell-6); }
+}
+const latCv = $('latCanvas');
+latCv.addEventListener('click', e => { const r = latCv.getBoundingClientRect(), x = (e.clientX - r.left)/r.width*400, y = (e.clientY - r.top)/r.height*400, m=30, cell=85; const j = Math.floor((x-m)/cell), i = Math.floor((y-m)/cell); if (i>=0&&i<4&&j>=0&&j<4){ lat[i][j] *= -1; cur=[i,j]; latRender(); } });
+latCv.addEventListener('keydown', e => { const k = {ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[e.key]; if (k){ e.preventDefault(); cur = [Math.max(0,Math.min(3,cur[0]+k[0])), Math.max(0,Math.min(3,cur[1]+k[1]))]; latRender(); } else if (e.key==='Enter' || e.key===' '){ e.preventDefault(); lat[cur[0]][cur[1]] *= -1; latRender(); } });
+latCv.addEventListener('focus', latRender); latCv.addEventListener('blur', latRender);
+$('latFig').addEventListener('click', () => { lat = FIG84.map(r => r.slice()); latRender(); });
+$('latUp').addEventListener('click', () => { lat = [0,1,2,3].map(() => [1,1,1,1]); latRender(); });
+$('latChk').addEventListener('click', () => { lat = [0,1,2,3].map(i => [0,1,2,3].map(j => (i+j)%2 ? -1 : 1)); latRender(); });
+$('latRnd').addEventListener('click', () => { lat = [0,1,2,3].map(() => [0,1,2,3].map(() => Math.random()<0.5 ? -1 : 1)); latRender(); });
+$('exT').addEventListener('input', e => { exT = +e.target.value; latRender(); });
+
+/* ================= TWO DIPOLES ================= */
+let twoT = 2;
+const T_TWO = 2/Math.log(2);
+function twoRender(){
+  const b = 1/twoT, pp = 1/(1+Math.exp(-2*b)), pa = 1 - pp;
+  $('twoTOut').textContent = twoT.toFixed(2);
+  $('tw1').textContent = (pp/2).toFixed(3); $('tw2').textContent = pa.toFixed(3); $('tw3').textContent = signed(-Math.tanh(b),3);
+  $('twV').textContent = twoT < T_TWO ? 'Below 2.885: both up is more likely than one up and one down.' : 'Above 2.885: one up and one down is more likely than both up.';
+  const c = twoCtx; if (!c) return;
+  const W=640,H=340, ax = axes(c, W, H, [46,22,46,44], [0,10], [0,1.05], [0,2,4,6,8,10], [0,0.25,0.5,0.75,1], kTlab, [['probability','s']]);
+  // right axis for U from -1 to 0
+  const Yu = u => ax.Y(1+u);  // map -1..0 onto 0..1
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; [-1,-0.5,0].forEach(u => c.fillText(signed(u, u===0||u===-1?0:1), W-40, Yu(u)+4));
+  rich(c, W-4, 12, 13, [['U','i'],['/','r'],['ε','i']], 'right');
+  const curve = (f, col, w, dash) => { c.strokeStyle=col; c.lineWidth=w; c.setLineDash(dash||[]); c.beginPath(); for (let i=1;i<=400;i++){ const t=10*i/400; const y=f(t); i>1?c.lineTo(ax.X(t),y):c.moveTo(ax.X(t),y); } c.stroke(); c.setLineDash([]); };
+  curve(t => ax.Y(1/(1+Math.exp(-2/t))), C.par, 2.6);
+  curve(t => ax.Y(1 - 1/(1+Math.exp(-2/t))), C.anti, 2.6);
+  curve(t => Yu(-Math.tanh(1/t)), C.ink, 1.8, [6,4]);
+  c.strokeStyle=C.muted; c.setLineDash([3,4]); c.lineWidth=1; c.beginPath(); c.moveTo(ax.X(T_TWO),16); c.lineTo(ax.X(T_TWO),H-44); c.stroke(); c.setLineDash([]);
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText('2/ln 2 ≈ 2.885', ax.X(T_TWO)+6, ax.Y(0.08));
+  c.strokeStyle=C.ink; c.globalAlpha=.45; c.beginPath(); c.moveTo(ax.X(twoT),16); c.lineTo(ax.X(twoT),H-44); c.stroke(); c.globalAlpha=1;
+  [[pp,C.par],[pa,C.anti]].forEach(([v,col]) => { c.fillStyle=col; c.beginPath(); c.arc(ax.X(twoT), ax.Y(v), 5, 0, 7); c.fill(); });
+}
+$('twoT').addEventListener('input', e => { twoT = +e.target.value; twoRender(); });
+
+/* ================= RNG ================= */
+let rs = (Date.now() ^ 0x9e3779b9) >>> 0 || 1;
+const rnd = () => { rs ^= rs << 13; rs >>>= 0; rs ^= rs >>> 17; rs ^= rs << 5; rs >>>= 0; return rs / 4294967296; };
+
+/* ================= 1D CHAIN ================= */
+const CN = 600, chain = new Int8Array(CN); for (let i=0;i<CN;i++) chain[i] = rnd()<0.5 ? -1 : 1;
+const CHH = 40; // rows of history drawn
+const chainHist = []; let chT = 1, chRun = !reduceMotion, chE = 0, chEn = 0;
+function chainSweep(){
+  const b = 1/chT, p4 = Math.exp(-4*b);
+  for (let k=0;k<CN;k++){ const i = (rnd()*CN)|0, s = chain[i], nb = chain[(i+1)%CN] + chain[(i+CN-1)%CN], dE = 2*s*nb; if (dE <= 0 || rnd() < (dE===4 ? p4 : 1)) chain[i] = -s; }
+  let e = 0; for (let i=0;i<CN;i++) e -= chain[i]*chain[(i+1)%CN];
+  chE += e/CN; chEn++;
+  chainHist.push(Int8Array.from(chain)); if (chainHist.length > CHH) chainHist.shift();
+}
+function chainDraw(){
+  const c = chainCtx; if (!c) return;
+  const W=900, H=150; c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  const up = hexRGB(C.up), dn = hexRGB(C.down);
+  const img = c.createImageData(CN, CHH);
+  for (let r=0;r<CHH;r++){ const row = chainHist[chainHist.length - CHH + r] || chain; for (let i=0;i<CN;i++){ const k=4*(r*CN+i), col = row[i]>0 ? up : dn; img.data[k]=col[0]; img.data[k+1]=col[1]; img.data[k+2]=col[2]; img.data[k+3]=255; } }
+  if (!chainDraw.off){ chainDraw.off = document.createElement('canvas'); }
+  const off = chainDraw.off; off.width = CN; off.height = CHH; off.getContext('2d').putImageData(img,0,0);
+  c.imageSmoothingEnabled = false; c.drawImage(off, 20, 14, W-40, H-46);
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left';
+  c.fillText('Each row is the whole chain after one sweep; newest at the bottom. Time runs down.', 20, H-12);
+}
+function chainInfo(){
+  const b = 1/chT;
+  $('chTOut').textContent = chT.toFixed(2);
+  $('chUe').textContent = signed(-Math.tanh(b), 3);
+  $('chUm').textContent = chEn ? signed(chE/chEn, 3) : '–';
+  const xi = -1/Math.log(Math.tanh(b));
+  $('chXi').textContent = xi >= 1000 ? Math.round(xi).toLocaleString('en-US') + ' spacings' : xi.toFixed(1) + ' spacings';
+  $('chPlay').textContent = chRun ? 'Pause' : 'Play';
+}
+$('chT').addEventListener('input', e => { chT = +e.target.value; chE = 0; chEn = 0; chainInfo(); });
+$('chPlay').addEventListener('click', () => { chRun = !chRun; chainInfo(); });
+
+/* ================= MEAN FIELD ================= */
+const MF = {t:0.7, h:0, log:false};
+function mfSolutions(t, h){
+  // roots of f(s) = tanh((s+h)/t) - s on [-1.0001, 1.0001]
+  const f = s => Math.tanh((s+h)/t) - s, roots = [], n = 4000;
+  let a = -1.0001, fa = f(a);
+  for (let k=1;k<=n;k++){ const b = -1.0001 + 2.0002*k/n, fb = f(b); if (fa === 0) roots.push(a); else if (fa*fb < 0){ let lo=a, hi=b; for (let it=0;it<60;it++){ const mid=(lo+hi)/2; (f(lo)*f(mid) <= 0) ? hi=mid : lo=mid; } roots.push((lo+hi)/2); } a = b; fa = fb; }
+  return roots.map(s => ({s, stable: (1/t)/Math.pow(Math.cosh((s+h)/t),2) < 1}));
+}
+const hStar = t => t >= 1 ? 0 : Math.sqrt(1-t) - t*Math.atanh(Math.sqrt(1-t));
+function mfRender(){
+  const {t, h} = MF, sols = mfSolutions(t, h);
+  $('mfTOut').textContent = t.toFixed(2); $('mfBOut').textContent = signed(h, 2);
+  $('mfSol').innerHTML = sols.map((o,i) => '<dt>' + (o.stable ? 'Stable' : 'Unstable') + ' solution</dt><dd>' + '<i>s̄</i> = ' + signed(o.s, 3) + '</dd>').join('') + '<dt class="sep"></dt><dt>' + (sols.length === 1 ? 'One solution' : 'Three solutions') + '</dt><dd></dd>';
+  // graphical solution
+  let c = gsCtx; if (c){
+    const W=340,H=330, ax = axes(c, W, H, [36,16,12,38], [-1.5,1.5], [-1.5,1.5], [-1,0,1], [-1,0,1], [['s̄','i']], null);
+    c.strokeStyle=C.res; c.lineWidth=1.8; c.beginPath(); c.moveTo(ax.X(-1.5),ax.Y(-1.5)); c.lineTo(ax.X(1.5),ax.Y(1.5)); c.stroke();
+    c.strokeStyle=C.mf; c.lineWidth=2.6; c.beginPath(); for (let i=0;i<=300;i++){ const s=-1.5+3*i/300; const y=ax.Y(Math.tanh((s+h)/t)); i?c.lineTo(ax.X(s),y):c.moveTo(ax.X(s),y); } c.stroke();
+    [-1,1].forEach(v => { c.strokeStyle=C.band; c.setLineDash([3,4]); c.beginPath(); c.moveTo(ax.X(-1.5),ax.Y(v)); c.lineTo(ax.X(1.5),ax.Y(v)); c.stroke(); c.setLineDash([]); });
+    sols.forEach(o => { c.fillStyle = o.stable ? C.exact : C.anti; c.beginPath(); c.arc(ax.X(o.s), ax.Y(o.s), 6, 0, 7); c.fill(); });
+    c.fillStyle=C.mf; rich(c, ax.X(-1.45), ax.Y(1.35), 14, [['tanh[(','r'],['s̄','i'],[' + ','r'],['h','i'],[')/','r'],['t','i'],[']','r']], 'left');
+    c.fillStyle=C.muted; rich(c, ax.X(0.9), ax.Y(1.2), 14, [['y = ','r'],['s̄','i']], 'left');
+  }
+  // phase diagram in (t, h)
+  c = pdCtx; if (c){
+    const W=340,H=330, ax = axes(c, W, H, [44,16,12,38], [0,2], [-1.2,1.2], [0,0.5,1,1.5,2], [-1,-0.5,0,0.5,1], [['k','i'],['B','sub'],['T','i'],[' / ','r'],['nε','i']], [['μ','i'],['B','sub'],['B','i'],[' / ','r'],['nε','i']]);
+    c.fillStyle=C.mf; c.globalAlpha=0.22; c.beginPath(); c.moveTo(ax.X(0), ax.Y(1));
+    for (let i=1;i<=200;i++){ const tt=i/200; c.lineTo(ax.X(tt), ax.Y(hStar(tt))); }
+    for (let i=200;i>=0;i--){ const tt=Math.max(i/200,1e-4); c.lineTo(ax.X(tt), ax.Y(-hStar(tt))); }
+    c.closePath(); c.fill(); c.globalAlpha=1;
+    c.strokeStyle=C.mf; c.lineWidth=2; c.beginPath(); for (let i=1;i<=200;i++){ const tt=i/200; i>1?c.lineTo(ax.X(tt),ax.Y(hStar(tt))):c.moveTo(ax.X(tt),ax.Y(hStar(tt))); } c.stroke();
+    c.beginPath(); for (let i=1;i<=200;i++){ const tt=i/200; i>1?c.lineTo(ax.X(tt),ax.Y(-hStar(tt))):c.moveTo(ax.X(tt),ax.Y(-hStar(tt))); } c.stroke();
+    c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText('3 solutions', ax.X(0.08), ax.Y(0.08)); c.fillText('1 solution', ax.X(1.15), ax.Y(0.6)); c.fillText('1 solution', ax.X(1.15), ax.Y(-0.6));
+    c.fillStyle=C.ink; c.beginPath(); c.arc(ax.X(t), ax.Y(h), 6, 0, 7); c.fill();
+  }
+}
+$('mfT').addEventListener('input', e => { MF.t = +e.target.value; mfRender(); });
+$('mfB').addEventListener('input', e => { MF.h = +e.target.value; mfRender(); });
+function mfM(T, n){ // positive mean-field solution of s = tanh(n s / T), field zero
+  if (T >= n) return 0; let lo = 1e-9, hi = 1; for (let k=0;k<70;k++){ const mid=(lo+hi)/2; (Math.tanh(n*mid/T) > mid) ? lo=mid : hi=mid; } return (lo+hi)/2;
+}
+function mtRender(){
+  let c = mtCtx; if (c){
+    const W=440,H=320;
+    if (!MF.log){
+      const ax = axes(c, W, H, [40,16,14,40], [0,5], [0,1.05], [0,1,2,3,4,5], [0,0.5,1], kTlab, [['|','r'],['s̄','i'],['|','r']]);
+      [[T => mfM(T,4), C.mf],[onsagerM, C.exact]].forEach(([f,col]) => { c.strokeStyle=col; c.lineWidth=2.6; c.beginPath(); for (let i=0;i<=400;i++){ const T=Math.max(0.01,5*i/400); const y=ax.Y(f(T)); i?c.lineTo(ax.X(T),y):c.moveTo(ax.X(T),y); } c.stroke(); });
+      c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center'; c.fillText('4', ax.X(4), ax.Y(0.08)); c.fillText('2.27', ax.X(TC_ONS), ax.Y(0.08));
+    } else {
+      // log-log: M vs (1 - T/Tc)
+      const lx = v => Math.log10(v), ax = axes(c, W, H, [44,16,14,40], [-4,0], [-2.2,0.2], [-4,-3,-2,-1,0], [-2,-1,0], [['1 − ','r'],['T','i'],['/','r'],['T','i'],['c','isub'],['  (log)','s']], [['|','r'],['s̄','i'],['|  (log)','r']], v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]), v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]));
+      [[x => mfM(4*(1-x),4), C.mf, 'slope 1/2'],[x => onsagerM(TC_ONS*(1-x)), C.exact, 'slope 1/8']].forEach(([f,col,lab]) => { c.strokeStyle=col; c.lineWidth=2.6; c.beginPath(); for (let i=0;i<=300;i++){ const lv=-4+4*i/300, x=Math.pow(10,lv); const y=ax.Y(lx(Math.max(f(x),1e-6))); i?c.lineTo(ax.X(lv),y):c.moveTo(ax.X(lv),y); } c.stroke(); c.fillStyle=col; c.font='12px '+SANS; c.textAlign='left'; c.fillText(lab, ax.X(-3.6), ax.Y(lx(Math.max(f(Math.pow(10,-3.6)),1e-6)))-8); });
+    }
+  }
+  c = chiCtx; if (c){
+    const W=440,H=320, Tc=4, ax = axes(c, W, H, [40,16,14,40], [0,8], [0,6], [0,2,4,6,8], [0,2,4,6], kTlab, [['χ','i']]);
+    c.strokeStyle=C.mf; c.lineWidth=2.6;
+    c.beginPath(); for (let i=0;i<=300;i++){ const T=Tc+0.02+4*i/300; const y=ax.Y(Math.min(7, 1/(T-Tc))); i?c.lineTo(ax.X(T),y):c.moveTo(ax.X(T),y); } c.stroke();
+    // below Tc, chi = beta*mu (1 - s^2) / (1 - beta n eps (1 - s^2)) with s the mean-field solution (exact within mean field)
+    c.beginPath(); let st=false; for (let i=0;i<=300;i++){ const T=0.3+(Tc-0.32)*i/300; const s=mfM(T,4), q=1-s*s, chi=(q/T)/(1-4*q/T); if (!isFinite(chi)) continue; const y=ax.Y(Math.min(7,chi)); st?c.lineTo(ax.X(T),y):(c.moveTo(ax.X(T),y),st=true); } c.stroke();
+    c.strokeStyle=C.muted; c.setLineDash([3,4]); c.lineWidth=1; c.beginPath(); c.moveTo(ax.X(Tc),16); c.lineTo(ax.X(Tc),H-40); c.stroke(); c.setLineDash([]);
+    c.fillStyle=C.muted; rich(c, ax.X(1.0), ax.Y(1.2), 14, [['1/2(','r'],['T','i'],['c','isub'],[' − ','r'],['T','i'],[')','r']], 'left'); rich(c, ax.X(5.2), ax.Y(1.2), 14, [['1/(','r'],['T','i'],[' − ','r'],['T','i'],['c','isub'],[')','r']], 'left');
+  }
+}
+$('mtLog').addEventListener('change', e => { MF.log = e.target.checked; mtRender(); });
+
+/* ================= 2D MONTE CARLO ================= */
+const MC = {L:180, T:2.27, h:0, sweeps:1, run:!reduceMotion, s:null, nsw:0, hist:[], visible:true};
+function mcInit(mode){
+  const L = MC.L, N = L*L; MC.s = new Int8Array(N);
+  for (let i=0;i<N;i++) MC.s[i] = mode==='up' ? 1 : (rnd()<0.5 ? -1 : 1);
+  MC.nsw = 0; MC.hist = [];
+}
+function mcUpdates(s, L, T, h, count){
+  const N = L*L, b = 1/T;
+  // acceptance table indexed by (sum of neighbors + 4)/2 and spin (0 for -1, 1 for +1)
+  const acc = new Float64Array(10);
+  for (let k=0;k<5;k++){ const nb = 2*k-4; for (let sp=0;sp<2;sp++){ const si = sp ? 1 : -1, dE = 2*si*(nb + h); acc[k*2+sp] = dE <= 0 ? 1 : Math.exp(-b*dE); } }
+  for (let n=0;n<count;n++){
+    const i = (rnd()*N)|0, x = i % L, y = (i - x)/L;
+    const nb = s[y*L + (x+1)%L] + s[y*L + (x+L-1)%L] + s[((y+1)%L)*L + x] + s[((y+L-1)%L)*L + x];
+    const si = s[i]; const a = acc[((nb+4)>>1)*2 + (si>0?1:0)];
+    if (a >= 1 || rnd() < a) s[i] = -si;
+  }
+}
+const mcSweep = (s, L, T, h) => mcUpdates(s, L, T, h, L*L);
+function mcMeasure(s, L, h){
+  let E = 0, M = 0; const N = L*L;
+  for (let y=0;y<L;y++){ const row = y*L, down = ((y+1)%L)*L; for (let x=0;x<L;x++){ const v = s[row+x]; M += v; E -= v*(s[row+(x+1)%L] + s[down+x]); } }
+  E -= h*M;
+  return {E: E/N, M: M/N};
+}
+const mcOff = document.createElement('canvas');
+function mcDraw(){
+  const c = mcCtx; if (!c || !MC.s) return;
+  const L = MC.L, W=520, H=520, up = hexRGB(C.up), dn = hexRGB(C.down);
+  mcOff.width = L; mcOff.height = L; const oc = mcOff.getContext('2d'), img = oc.createImageData(L, L), d = img.data;
+  for (let i=0;i<L*L;i++){ const col = MC.s[i]>0 ? up : dn; d[4*i]=col[0]; d[4*i+1]=col[1]; d[4*i+2]=col[2]; d[4*i+3]=255; }
+  oc.putImageData(img,0,0); c.imageSmoothingEnabled=false; c.drawImage(mcOff, 0, 0, W, H);
+}
+function trDraw(){
+  const c = trCtx; if (!c) return;
+  const W=640,H=180, ax = axes(c, W, H, [40,12,14,26], [0,300], [-2.2,1.05], [], [-2,-1,0,1], null, null);
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText('last 300 frames', 44, H-8);
+  const hs = MC.hist, n = hs.length;
+  [['M',C.mc],['E',C.mf]].forEach(([k,col]) => { c.strokeStyle=col; c.lineWidth=2; c.beginPath(); hs.forEach((o,i) => { const x=ax.X(300-n+i), y=ax.Y(o[k]); i?c.lineTo(x,y):c.moveTo(x,y); }); c.stroke(); });
+}
+function mcInfo(){
+  const atTc = Math.abs(MC.T - TC_ONS) < 1e-9;
+  $('mcTOut').innerHTML = atTc ? MC.T.toFixed(3) + ' = <i>T</i><sub>c</sub>' : MC.T.toFixed(2); $('mcBOut').textContent = signed(MC.h, 2);
+  $('mcTc').setAttribute('aria-pressed', String(atTc));
+  $('mcSOut').textContent = ['0.25','0.5','1','2','4'][MC.sweeps];
+  $('mcPlay').textContent = MC.run ? 'Pause' : 'Play';
+  $('mcSw').textContent = Math.floor(MC.nsw).toLocaleString('en-US');
+  const last = MC.hist[MC.hist.length-1];
+  $('mcE').textContent = last ? signed(last.E, 3) : '–'; $('mcM').textContent = last ? signed(last.M, 3) : '–';
+  $('mcOn').textContent = MC.h === 0 ? onsagerM(MC.T).toFixed(3) : 'only for B = 0';
+  $('mcInfo').textContent = MC.L + ' × ' + MC.L + ' = ' + (MC.L*MC.L).toLocaleString('en-US') + ' dipoles';
+}
+const SWEEP_FR = [0.25, 0.5, 1, 2, 4];
+function mcStep(){
+  const fr = SWEEP_FR[MC.sweeps], N = MC.L*MC.L;
+  mcUpdates(MC.s, MC.L, MC.T, MC.h, Math.round(fr*N));
+  MC.nsw += fr;
+  MC.hist.push(mcMeasure(MC.s, MC.L, MC.h)); if (MC.hist.length > 300) MC.hist.shift();
+}
+$('mcT').addEventListener('input', e => { MC.T = +e.target.value; mcInfo(); });
+$('mcTc').addEventListener('click', () => { MC.T = TC_ONS; $('mcT').value = TC_ONS.toFixed(2); mcInfo(); });
+$('mcB').addEventListener('input', e => { MC.h = +e.target.value; mcInfo(); });
+$('mcL').addEventListener('change', e => { MC.L = +e.target.value; mcInit('rand'); mcDraw(); mcInfo(); });
+$('mcS').addEventListener('input', e => { MC.sweeps = +e.target.value; mcInfo(); });
+$('mcPlay').addEventListener('click', () => { MC.run = !MC.run; mcInfo(); });
+$('mcRand').addEventListener('click', () => { mcInit('rand'); mcDraw(); mcInfo(); });
+$('mcCold').addEventListener('click', () => { mcInit('up'); mcDraw(); mcInfo(); });
+
+/* ---------- temperature scan ---------- */
+const SCAN = {T:[], E:[], M:[], Cv:[], X:[]};
+function scanRun(){
+  const L = 24, N = L*L, Ts = []; for (let k=0;k<33;k++) Ts.push(+(1.0 + 3.0*k/32).toFixed(4));
+  const s = new Int8Array(N).fill(1); // start cold and heat up, the lecture code re-randomizes; cold start equilibrates faster below Tc
+  SCAN.T = []; SCAN.E = []; SCAN.M = []; SCAN.Cv = []; SCAN.X = [];
+  $('scanBtn').disabled = true;
+  let k = 0;
+  const one = () => {
+    const T = Ts[k];
+    for (let i=0;i<600;i++) mcSweep(s, L, T, 0);
+    let e1=0, e2=0, m1=0, m2=0; const n = 1500;
+    for (let i=0;i<n;i++){ mcSweep(s, L, T, 0); const {E, M} = mcMeasure(s, L, 0); const Et = E*N, Ma = Math.abs(M)*N; e1 += Et; e2 += Et*Et; m1 += Ma; m2 += Ma*Ma; }
+    e1/=n; e2/=n; m1/=n; m2/=n;
+    SCAN.T.push(T); SCAN.E.push(e1/N); SCAN.M.push(m1/N); SCAN.Cv.push((e2 - e1*e1)/(T*T)/N); SCAN.X.push((m2 - m1*m1)/T/N);
+    k++; $('scanStatus').textContent = 'Simulating ' + k + ' of ' + Ts.length + ' temperatures…'; scanDraw();
+    if (k < Ts.length) setTimeout(one, 0); else { $('scanBtn').disabled = false; $('scanStatus').textContent = 'Done. Run again for a fresh set of samples.'; }
+  };
+  setTimeout(one, 20);
+}
+function scanDraw(){
+  const defs = [
+    {ctx:scCtx[0], key:'E', yr:[-2.1,0], yt:[-2,-1,0], lab:[['U','i'],[' / ','r'],['Nε','i']]},
+    {ctx:scCtx[1], key:'M', yr:[0,1.05], yt:[0,0.5,1], lab:[['|','r'],['M','i'],['| / ','r'],['N','i']]},
+    {ctx:scCtx[2], key:'Cv', yr:[0,2.2], yt:[0,1,2], lab:[['C','i'],[' / ','r'],['Nk','i'],['B','sub']]},
+    {ctx:scCtx[3], key:'X', yr:[0,null], yt:null, lab:[['χ','i'],[' per dipole (arb.)','s']]}
+  ];
+  defs.forEach(d => {
+    const c = d.ctx; if (!c) return;
+    const W=440,H=260; let yr = d.yr, yt = d.yt;
+    if (yr[1] === null){ const mx = Math.max(1, ...SCAN.X)*1.1; yr = [0, mx]; const step = Math.pow(10, Math.floor(Math.log10(mx))); yt = []; for (let v=0; v<=mx; v+=step) yt.push(+v.toFixed(3)); }
+    const ax = axes(c, W, H, [44,16,14,40], [1,4], yr, [1,2,3,4], yt, kTlab, d.lab);
+    c.strokeStyle=C.muted; c.setLineDash([3,4]); c.lineWidth=1; c.beginPath(); c.moveTo(ax.X(TC_ONS),16); c.lineTo(ax.X(TC_ONS),H-40); c.stroke(); c.setLineDash([]);
+    if (d.key === 'M'){ c.strokeStyle=C.exact; c.lineWidth=2; c.beginPath(); for (let i=0;i<=300;i++){ const T=1+3*i/300; const y=ax.Y(onsagerM(T)); i?c.lineTo(ax.X(T),y):c.moveTo(ax.X(T),y); } c.stroke(); }
+    c.fillStyle=C.mc; SCAN.T.forEach((T,i) => { c.beginPath(); c.arc(ax.X(T), ax.Y(Math.min(SCAN[d.key][i], yr[1])), 4, 0, 7); c.fill(); });
+    if (!SCAN.T.length){ c.fillStyle=C.muted; c.font='13px '+SANS; c.textAlign='center'; c.fillText('Press “Run a temperature scan”', W/2, H/2); }
+  });
+}
+$('scanBtn').addEventListener('click', scanRun);
+
+/* ---------- correlation function + block spins ---------- */
+function corrCompute(){
+  const s = MC.s, L = MC.L, N = L*L, R = Math.min(60, Math.floor(L/2));
+  let mean = 0; for (let i=0;i<N;i++) mean += s[i]; mean /= N;
+  const c = new Float64Array(R+1);
+  for (let r=0;r<=R;r++){ let acc = 0; for (let y=0;y<L;y++){ const row=y*L, rowr=((y+r)%L)*L; for (let x=0;x<L;x++){ const v=s[row+x]; acc += v*s[row+(x+r)%L] + v*s[rowr+x]; } } c[r] = acc/(2*N) - mean*mean; }
+  return c;
+}
+function corrDraw(){
+  const cr = corrCompute(), R = cr.length - 1, c0 = cr[0];
+  let xi = null; for (let r=1;r<=R;r++){ if (cr[r] < c0/Math.E){ const a = cr[r-1], b = cr[r]; xi = r-1 + (a - c0/Math.E)/(a - b); break; } }
+  $('crT').innerHTML = (Math.abs(MC.T - TC_ONS) < 1e-9 ? MC.T.toFixed(3) : MC.T.toFixed(2)) + ' <i>ε</i>/<i>k</i><sub>B</sub>';
+  $('crXi').textContent = c0 < 1e-3 ? 'no fluctuations' : xi === null ? '> ' + R + ' spacings' : xi.toFixed(1) + ' spacings';
+  const c = crCtx; if (!c) return;
+  const W=640,H=280, rmax = Math.min(R, 60), ymax = Math.max(0.05, c0)*1.1;
+  const ax = axes(c, W, H, [46,16,14,40], [0, rmax+1], [Math.min(0, ...Array.from(cr).slice(0,rmax+1))*1.1, ymax], [0,10,20,30,40,50,60].filter(v=>v<=rmax+1), (() => { const top = ymax/1.1, st = top > 0.5 ? 0.25 : top > 0.2 ? 0.1 : top > 0.1 ? 0.05 : 0.02; const t = []; for (let v=0; v<=top+1e-9; v+=st) t.push(+v.toFixed(2)); return t; })(), [['distance ','s'],['r','i']], [['c','i'],['(','r'],['r','i'],[')','r']]);
+  const bw = (W-46-14)/(rmax+1)*0.7;
+  c.fillStyle=C.mc; for (let r=0;r<=rmax;r++){ const y0 = ax.Y(0), y = ax.Y(cr[r]); c.fillRect(ax.X(r)-bw/2, Math.min(y,y0), bw, Math.abs(y0-y)); }
+  if (xi !== null && xi <= rmax){ c.strokeStyle=C.mf; c.setLineDash([4,4]); c.lineWidth=1.5; c.beginPath(); c.moveTo(ax.X(xi),16); c.lineTo(ax.X(xi),H-40); c.stroke(); c.setLineDash([]); c.fillStyle=C.mf; rich(c, ax.X(xi)+6, 34, 15, [['ξ','i']], 'left'); }
+}
+function blockSpin(s, L){ const L2 = L/3, out = new Int8Array(L2*L2); for (let by=0;by<L2;by++) for (let bx=0;bx<L2;bx++){ let sum=0; for (let dy=0;dy<3;dy++) for (let dx=0;dx<3;dx++) sum += s[(3*by+dy)*L + 3*bx+dx]; out[by*L2+bx] = sum>0 ? 1 : -1; } return out; }
+const bsOff = document.createElement('canvas');
+function drawLattice(c, s, L, W, H){
+  const up = hexRGB(C.up), dn = hexRGB(C.down);
+  bsOff.width = L; bsOff.height = L; const oc = bsOff.getContext('2d'), img = oc.createImageData(L,L), d = img.data;
+  for (let i=0;i<L*L;i++){ const col = s[i]>0 ? up : dn; d[4*i]=col[0]; d[4*i+1]=col[1]; d[4*i+2]=col[2]; d[4*i+3]=255; }
+  oc.putImageData(img,0,0); c.imageSmoothingEnabled=false; c.clearRect(0,0,W,H); c.drawImage(bsOff, 0, 0, W, H);
+}
+function bsDraw(){
+  if (!MC.s) return;
+  const L = MC.L, b1 = blockSpin(MC.s, L), L1 = L/3;
+  if (bs1Ctx) drawLattice(bs1Ctx, b1, L1, 400, 400);
+  $('bs1c').textContent = 'After one block-spin transformation: ' + L1 + ' × ' + L1 + '.';
+  if (L1 % 3 === 0 && L1 >= 3){ const b2 = blockSpin(b1, L1), L2 = L1/3; if (bs2Ctx) drawLattice(bs2Ctx, b2, L2, 400, 400); $('bs2c').textContent = 'After two: ' + L2 + ' × ' + L2 + '.'; }
+  else { if (bs2Ctx){ bs2Ctx.clearRect(0,0,400,400); bs2Ctx.fillStyle=C.surface; bs2Ctx.fillRect(0,0,400,400); bs2Ctx.fillStyle=C.muted; bs2Ctx.font='14px '+SANS; bs2Ctx.textAlign='center'; bs2Ctx.fillText('Choose 90 × 90 or larger for a second step', 200, 200); } $('bs2c').textContent = 'After two.'; }
+}
+
+/* ================= LAYOUT + LOOP ================= */
+let latCtx, twoCtx, chainCtx, gsCtx, pdCtx, mtCtx, chiCtx, mcCtx, trCtx, crCtx, bs1Ctx, bs2Ctx; const scCtx = [];
+function layout(){
+  latCtx = fit($('latCanvas'), 400, 400);
+  twoCtx = fit($('twoCanvas'), 640, 340);
+  chainCtx = fit($('chainCanvas'), 900, 150);
+  gsCtx = fit($('gsCanvas'), 340, 330); pdCtx = fit($('pdCanvas'), 340, 330);
+  mtCtx = fit($('mtCanvas'), 440, 320); chiCtx = fit($('chiCanvas'), 440, 320);
+  mcCtx = fit($('mcCanvas'), 520, 520); trCtx = fit($('trCanvas'), 640, 180);
+  for (let k=0;k<4;k++) scCtx[k] = fit($('sc'+k), 440, 260);
+  crCtx = fit($('crCanvas'), 640, 280);
+  bs1Ctx = fit($('bs1'), 400, 400); bs2Ctx = fit($('bs2'), 400, 400);
+  redrawAll();
+}
+function redrawAll(){ latRender(); twoRender(); chainInfo(); chainDraw(); mfRender(); mtRender(); mcDraw(); trDraw(); mcInfo(); scanDraw(); corrDraw(); bsDraw(); }
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
+const vis = {chain:true, mc:true, cr:true};
+const io = new IntersectionObserver(es => es.forEach(e => { vis[e.target.dataset.key] = e.isIntersecting; }));
+[['chainCanvas','chain'],['mcCanvas','mc'],['crCanvas','cr'],['bs1','cr']].forEach(([id,k]) => { $(id).dataset.key = k; io.observe($(id)); });
+let infoT = 0, corrT = 0, lastT = performance.now();
+function loop(now){
+  const dt = Math.min(0.1, (now - lastT)/1000); lastT = now;
+  if (chRun && vis.chain && chainCtx){ chainSweep(); chainDraw(); }
+  if (MC.run && (vis.mc || vis.cr) && mcCtx){ mcStep(); if (vis.mc){ mcDraw(); } }
+  infoT += dt; corrT += dt;
+  if (infoT > 0.25){ infoT = 0; if (vis.mc){ trDraw(); mcInfo(); } if (vis.chain) chainInfo(); }
+  if (corrT > 0.6 && vis.cr){ corrT = 0; corrDraw(); bsDraw(); }
+  requestAnimationFrame(loop);
+}
+for (let k=0;k<CHH;k++) chainSweep();
+mcInit('rand');
+layout();
+requestAnimationFrame(loop);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll);
+})();
+</script>
+</body>
+</html>
