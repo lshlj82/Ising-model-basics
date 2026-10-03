@@ -49,6 +49,11 @@ p{margin:0 0 1rem}
 .note{font-size:.95rem;color:var(--muted)}
 
 .eq{display:block;text-align:center;margin:1.25rem 0;overflow-x:auto;overflow-y:hidden;padding:.25rem 0}
+.eq.multi{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:2.2em;row-gap:.65rem}
+.boxed.multi{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:2em;row-gap:.6rem;max-width:100%}
+.eqp{max-width:100%}
+.eqp.sep{margin-left:1.85em}
+.multi:not(.chain) > .eqp.cont{margin-left:-1.85em}
 mjx-container{color:inherit}
 mjx-container[display="true"]{margin:0 !important}
 .stats mjx-container,.legend mjx-container,.cap mjx-container,.ctl small mjx-container{font-size:105%}
@@ -128,7 +133,7 @@ window.MathJax = {
   <h2 id="h-model">The model</h2>
   <div class="prose">
     <p>Let \(s_i = +1\) when dipole \(i\) points up and \(s_i = -1\) when it points down. A pair of neighboring dipoles contributes \(-\varepsilon\) when parallel and \(+\varepsilon\) when antiparallel, which is \(-\varepsilon s_i s_j\) in either case. The total energy, summed over neighboring pairs, and the partition function, summed over all sets of alignments, are</p>
-    <div class="eq">\[ U = -\varepsilon \sum_{\text{neighboring pairs } i,j} s_i s_j, \qquad Z = \sum_{\{s_i\}} e^{-\beta U} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle U = -\varepsilon \sum_{\text{neighboring pairs } i,j} s_i s_j, \)</span><span class="eqp">\( \displaystyle Z = \sum_{\{s_i\}} e^{-\beta U} \)</span></div>
     <p>With \(N\) dipoles, that sum has \(2^N\) terms, so brute force is hopeless for any real sample. For a 4 × 4 lattice, though, there are only \(2^{16} = 65{,}536\) states, few enough for the computer to add up exactly. Click dipoles to flip them; the dots mark parallel and antiparallel bonds (Problem 8.15).</p>
   </div>
   <div class="fig">
@@ -172,7 +177,7 @@ window.MathJax = {
   <h2 id="h-two">Two dipoles</h2>
   <div class="prose">
     <p>Problem 8.17. With just two dipoles, the states \(\uparrow\uparrow\) and \(\downarrow\downarrow\) have energy \(-\varepsilon\), and \(\uparrow\downarrow\) and \(\downarrow\uparrow\) have \(+\varepsilon\), so</p>
-    <div class="eq">\[ Z = 2\left(e^{\beta\varepsilon} + e^{-\beta\varepsilon}\right) = 4\cosh\beta\varepsilon, \qquad P_{\text{parallel}} = \frac{1}{1 + e^{-2\beta\varepsilon}}, \qquad U = -\varepsilon\tanh\beta\varepsilon \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle Z = 2\left(e^{\beta\varepsilon} + e^{-\beta\varepsilon}\right) = 4\cosh\beta\varepsilon, \)</span><span class="eqp">\( \displaystyle P_{\text{parallel}} = \frac{1}{1 + e^{-2\beta\varepsilon}}, \)</span><span class="eqp">\( \displaystyle U = -\varepsilon\tanh\beta\varepsilon \)</span></div>
     <p>Both dipoles pointing up is more likely than one up and one down when \(\tfrac12 P_{\text{parallel}} > P_{\text{antiparallel}}\), which works out to \(e^{2\beta\varepsilon} > 2\), that is \(T < 2\varepsilon/(k_{\mathrm{B}}\ln 2) \approx 2.885\,\varepsilon/k_{\mathrm{B}}\).</p>
   </div>
   <div class="fig">
@@ -204,7 +209,7 @@ window.MathJax = {
   <h2 id="h-oned">The exact solution in one dimension</h2>
   <div class="prose">
     <p>A real ferromagnet is three-dimensional and not exactly solvable, but the one-dimensional chain is. With \(U = -\varepsilon(s_1s_2 + s_2s_3 + \cdots + s_{N-1}s_N)\), the last sum gives \(\sum_{s_N = \pm1} e^{\beta\varepsilon s_{N-1}s_N} = 2\cosh\beta\varepsilon\) whatever \(s_{N-1}\) is, and so on down the chain:</p>
-    <div class="eq">\[ Z = 2^N\cosh^{N-1}(\beta\varepsilon) \approx \left(2\cosh\beta\varepsilon\right)^N, \qquad \bar{U} = -\frac{\partial}{\partial\beta}\ln Z = -N\varepsilon\tanh\beta\varepsilon \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle Z = 2^N\cosh^{N-1}(\beta\varepsilon) \approx \left(2\cosh\beta\varepsilon\right)^N, \)</span><span class="eqp">\( \displaystyle \bar{U} = -\frac{\partial}{\partial\beta}\ln Z = -N\varepsilon\tanh\beta\varepsilon \)</span></div>
     <p>These are exactly the results for a two-state paramagnet, with \(\mu B\) replaced by \(\varepsilon\), except that here the dipoles line up with each other rather than with a field. As \(T \to 0\), \(\bar{U} \to -N\varepsilon\) (perfectly aligned); as \(T \to \infty\), \(\bar{U} \to 0\). The order sets in gradually, with no abrupt transition at any nonzero temperature: each dipole has only two neighbors, too few to sustain long-range order. The chain below runs the Metropolis algorithm described further down; the domains grow as it cools, but never take over completely.</p>
   </div>
   <div class="canvas-holder" style="margin-top:1.25rem"><canvas id="chainCanvas" class="pix" aria-label="A one-dimensional Ising chain evolving at the chosen temperature"></canvas></div>
@@ -233,7 +238,7 @@ window.MathJax = {
   <h2 id="h-mfa">The mean-field approximation</h2>
   <div class="prose">
     <p>A very crude approximation can “solve” the Ising model in any dimension and shows why dimensionality matters. Focus on one dipole with \(n\) nearest neighbors (2 in one dimension, 4 on a square lattice, 6, 8, or 12 for simple, body-centered, or face-centered cubic). If \(\bar{s}\) is the average alignment of its neighbors, \(E_\uparrow = -\varepsilon n\bar{s}\) and \(E_\downarrow = +\varepsilon n\bar{s}\), so</p>
-    <div class="eq">\[ Z_i = 2\cosh(\beta\varepsilon n\bar{s}), \qquad \bar{s}_i = \tanh(\beta\varepsilon n\bar{s}) \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle Z_i = 2\cosh(\beta\varepsilon n\bar{s}), \)</span><span class="eqp">\( \displaystyle \bar{s}_i = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
     <p>Up to here this is exact. The approximation is to assume there are no fluctuations, so every neighborhood is typical and \(\bar{s}_i = \bar{s}\), the same idea used for the van der Waals equation:</p>
     <div class="eq"><span class="boxed">\( \displaystyle \bar{s} = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
     <p>Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
