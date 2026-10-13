@@ -20,6 +20,11 @@ Created by **Claude Opus 5.5**, based on the lecture notes by **Sang Hoon Lee** 
 
 **Correlations and scale invariance.** The correlation function c(r) = ⟨s<sub>i</sub>s<sub>j</sub>⟩ − s̄² of the live simulation (Problem 8.29) with its correlation length, and 3 × 3 majority-rule block-spin transformations, applied once and twice (Problem 8.32), with a short account of fixed points, universality, and the renormalization group.
 
+**Going deeper.** A closing section points to the Ising model in two graduate courses at Gyeongsang National University, with each entry linked back to the section of this page it builds on:
+
+- [Special Topics in Complex Systems](https://lshlj82.github.io/special-topics-in-complex-systems-GNU/): [introduction](https://lshlj82.github.io/Ising-model-preliminary/), [1D Ising model](https://lshlj82.github.io/Ising-model-1D/), [mean-field and Landau theory](https://lshlj82.github.io/Ising-model-MF-Landau/), [2D Ising model](https://lshlj82.github.io/Ising-model-2D/), and [the renormalization group](https://lshlj82.github.io/Ising-model-RG/).
+- [Phase Transitions and Critical Phenomena](https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/): [Chapter 2, Part 1](https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02a-phase-transitions-in-principle.html), [Chapter 2, Part 2](https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02b-symmetry-breaking-and-lattice-gases.html), and [Chapter 3](https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch03-phase-transitions-in-practice.html).
+
 ## Running it
 
 There is nothing to build or install. The whole demo is one self-contained file, `index.html`, with all CSS and JavaScript inline.
@@ -61,6 +66,7 @@ python3 -m http.server 8000
 - Demo: Claude Opus 5.5
 - Physics content and examples: lecture notes by Sang Hoon Lee
 - The lecture follows Daniel V. Schroeder, *An Introduction to Thermal Physics* (Section 8.2 and Problems 8.15, 8.17, 8.18, 8.22, 8.24, 8.29, and 8.32), and draws on N. Goldenfeld, *Lectures on Phase Transitions and the Renormalization Group*; M. E. J. Newman and G. T. Barkema, *Monte Carlo Methods in Statistical Physics*; and K. G. Wilson, "Problems in Physics with Many Scales of Length," *Scientific American* 241 (1979).
+- Deeper-level references: the Ising-model demos of the graduate courses Special Topics in Complex Systems (following K. Christensen and N. R. Moloney, *Complexity and Criticality*) and Phase Transitions and Critical Phenomena (following N. Goldenfeld).
 
 ## License
 

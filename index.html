@@ -97,6 +97,13 @@ button:disabled{opacity:.5;cursor:progress}
 @media (max-width:700px){.two{grid-template-columns:1fr}}
 canvas.pix{image-rendering:pixelated}
 
+.deeper{list-style:none;margin:0 0 .5rem;padding:0;max-width:44rem}
+.deeper li{padding:.75rem 0 .75rem 1rem;border-left:2px solid var(--rule)}
+.deeper li + li{margin-top:.5rem}
+.deeper .t{font-weight:500}
+.deeper .d{display:block;font-size:1rem}
+.deeper .meta{display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-top:.2rem}
+.deeper .meta a{color:inherit}
 footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;font-family:var(--sans);font-size:.9rem;color:var(--muted)}
 footer p{margin:0 0 .4rem}
 </style>
@@ -419,6 +426,61 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
   </div>
   <p class="prose note" style="margin-top:1.25rem">Set the simulation above to 270 × 270 and compare: well below \(T_c\) the blocks become more uniform (lower effective temperature), well above \(T_c\) they become more random (higher), and near \(T_c\) they look statistically the same as the original.</p>
+</section>
+
+<section id="deeper" aria-labelledby="h-deeper">
+  <h2 id="h-deeper">Going deeper</h2>
+  <div class="prose">
+    <p>This page is the introduction to the Ising model in the undergraduate course <a href="https://lshlj82.github.io/statphys2-GNU/">Statistical Physics 2</a>. Two graduate courses in the Department of Physics, Gyeongsang National University, take the same model much further, and each page below picks up where a section of this one leaves off.</p>
+  </div>
+  <h3><a href="https://lshlj82.github.io/special-topics-in-complex-systems-GNU/">Special Topics in Complex Systems</a></h3>
+  <p class="prose note">Following K. Christensen and N. R. Moloney, <i>Complexity and Criticality</i> (Imperial College Press, 2005).</p>
+  <ul class="deeper">
+    <li>
+      <a class="t" href="https://lshlj82.github.io/Ising-model-preliminary/">The Ising model: introduction</a>
+      <span class="d">The model, its Hamiltonian and partition function, and why interacting binary spins are the standard testing ground for phase transitions.</span>
+      <span class="meta">Builds on: <a href="#model">The model</a> · <a href="https://github.com/lshlj82/Ising-model-preliminary">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/Ising-model-1D/">The 1D Ising model</a>
+      <span class="d">The transfer-matrix solution in one dimension, and why there is no ordered phase at any nonzero temperature.</span>
+      <span class="meta">Builds on: <a href="#oned">The exact solution in one dimension</a> · <a href="https://github.com/lshlj82/Ising-model-1D">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/Ising-model-MF-Landau/">Mean-field and Landau theory of the Ising model</a>
+      <span class="d">The self-consistent mean-field equation, the Landau free energy expanded in the order parameter, and the mean-field exponents.</span>
+      <span class="meta">Builds on: <a href="#mfa">The mean-field approximation</a> · <a href="https://github.com/lshlj82/Ising-model-MF-Landau">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/Ising-model-2D/">The 2D Ising model</a>
+      <span class="d">Monte Carlo simulations on the square lattice, Onsager's exact critical temperature, and finite-size behavior near the transition.</span>
+      <span class="meta">Builds on: <a href="#mc">Monte Carlo simulation</a> · <a href="https://github.com/lshlj82/Ising-model-2D">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/Ising-model-RG/">The renormalization group for the Ising model</a>
+      <span class="d">Block spins, the flow of couplings under repeated coarse-graining, fixed points, and critical exponents from the linearized flow.</span>
+      <span class="meta">Builds on: <a href="#clusters">Correlations and scale invariance</a> · <a href="https://github.com/lshlj82/Ising-model-RG">source</a></span>
+    </li>
+  </ul>
+  <h3><a href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/">Phase Transitions and Critical Phenomena</a></h3>
+  <p class="prose note">Following N. Goldenfeld, <i>Lectures on Phase Transitions and the Renormalization Group</i> (Addison-Wesley, 1992).</p>
+  <ul class="deeper">
+    <li>
+      <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02a-phase-transitions-in-principle.html">Chapter 2, Part 1: how phase transitions occur in principle</a>
+      <span class="d">The thermodynamic limit, exact enumeration of all \(2^{16}\) states of a 4 × 4 lattice, convexity of the free energy, symmetry, and domain walls in one dimension.</span>
+      <span class="meta">Builds on: <a href="#model">The model</a> · <a href="#oned">The exact solution in one dimension</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02a-phase-transitions-in-principle.html">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02b-symmetry-breaking-and-lattice-gases.html">Chapter 2, Part 2: symmetry breaking, ergodicity, and lattice gases</a>
+      <span class="d">The Peierls argument for order in two dimensions, spontaneous symmetry breaking, ergodicity breaking, and why a lattice gas is an Ising magnet.</span>
+      <span class="meta">Builds on: <a href="#mfa">The mean-field approximation</a> · <a href="#mc">Monte Carlo simulation</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02b-symmetry-breaking-and-lattice-gases.html">source</a></span>
+    </li>
+    <li>
+      <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch03-phase-transitions-in-practice.html">Chapter 3: how phase transitions occur in practice</a>
+      <span class="d">The exact one-dimensional solution by transfer matrix, spatial correlations, the low-temperature expansion, Weiss mean-field theory with its exponents, and the Ising model on networks.</span>
+      <span class="meta">Builds on: <a href="#oned">The exact solution in one dimension</a> · <a href="#mfa">The mean-field approximation</a> · <a href="#clusters">Correlations and scale invariance</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch03-phase-transitions-in-practice.html">source</a></span>
+    </li>
+  </ul>
 </section>
 </div>
 
