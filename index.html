@@ -70,6 +70,8 @@ canvas{display:block;width:100%}
 .ctl:last-child{margin-bottom:0}
 .ctl label{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;font-weight:500;margin-bottom:.3rem}
 .ctl .lt{flex:1 1 auto}
+/* plain-text name for controls whose visible label is typeset math (MathJax SVG is not exposed to assistive tech) */
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
 .ctl output{flex:0 0 auto;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:400}
 .ctl small{display:block;color:var(--muted);line-height:1.4;margin-top:.25rem}
 input[type=range]{width:100%;accent-color:var(--mc);margin:0}
@@ -177,7 +179,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
       </dl>
       <h3 style="margin-top:1.25rem">All 65,536 states at temperature \(T\)</h3>
       <div class="ctl">
-        <label for="exT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="exTOut"></output></label>
+        <label for="exT"><span class="lt"><span class="sr-only">Temperature kBT/ε (all 65,536 states)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="exTOut"></output></label>
         <input type="range" id="exT" min="0.2" max="6" step="0.05" value="2.5">
       </div>
       <dl class="stats">
@@ -209,7 +211,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="twoT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="twoTOut"></output></label>
+        <label for="twoT"><span class="lt"><span class="sr-only">Temperature kBT/ε (two dipoles)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="twoTOut"></output></label>
         <input type="range" id="twoT" min="0.1" max="10" step="0.05" value="2">
       </div>
       <dl class="stats">
@@ -237,7 +239,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="chT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="chTOut"></output></label>
+        <label for="chT"><span class="lt"><span class="sr-only">Temperature kBT/ε (one-dimensional chain)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="chTOut"></output></label>
         <input type="range" id="chT" min="0.3" max="4" step="0.05" value="1">
       </div>
       <div class="ctl btns"><button type="button" id="chPlay">Pause</button></div>
@@ -281,11 +283,11 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="mfT"><span class="lt">\(k_{\mathrm{B}}T/n\varepsilon\)</span> <output id="mfTOut"></output></label>
+        <label for="mfT"><span class="lt"><span class="sr-only">Temperature kBT/nε (mean field)</span>\(k_{\mathrm{B}}T/n\varepsilon\)</span> <output id="mfTOut"></output></label>
         <input type="range" id="mfT" min="0.05" max="2" step="0.01" value="0.7">
       </div>
       <div class="ctl">
-        <label for="mfB"><span class="lt">\(\mu_B B/n\varepsilon\)</span> <output id="mfBOut"></output></label>
+        <label for="mfB"><span class="lt"><span class="sr-only">Field μB·B/nε (mean field)</span>\(\mu_B B/n\varepsilon\)</span> <output id="mfBOut"></output></label>
         <input type="range" id="mfB" min="-1.2" max="1.2" step="0.01" value="0">
       </div>
       <dl class="stats" id="mfSol"></dl>
@@ -303,7 +305,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
       <div class="legend">
         <span><span class="swatch line" style="background:var(--mf)"></span>Mean field</span>
         <span><span class="swatch line" style="background:var(--exact)"></span>Onsager (exact)</span>
-        <label class="check" style="font-size:.85rem"><input type="checkbox" id="mtLog"> Log-log near \(T_c\)</label>
+        <label class="check" style="font-size:.85rem"><input type="checkbox" id="mtLog"> Log-log near \(T_c\)<span class="sr-only"> Tc</span></label>
       </div>
     </div>
     <div>
@@ -336,13 +338,13 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="mcT"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="mcTOut"></output></label>
+        <label for="mcT"><span class="lt"><span class="sr-only">Temperature kBT/ε (Monte Carlo)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="mcTOut"></output></label>
         <input type="range" id="mcT" min="0.5" max="5" step="0.01" value="2.27">
         <small>Onsager’s exact \(T_c = 2/\ln(1+\sqrt{2}) \approx 2.269\).</small>
         <div class="btns" style="margin-top:.5rem"><button type="button" id="mcTc" aria-pressed="false">Jump to \(T_c\)</button></div>
       </div>
       <div class="ctl">
-        <label for="mcB"><span class="lt">Field \(\mu_B B/\varepsilon\)</span> <output id="mcBOut"></output></label>
+        <label for="mcB"><span class="lt">Field \(\mu_B B/\varepsilon\)<span class="sr-only"> μB·B/ε</span></span> <output id="mcBOut"></output></label>
         <input type="range" id="mcB" min="-1" max="1" step="0.01" value="0">
       </div>
       <div class="ctl">
@@ -832,7 +834,7 @@ function scanDraw(){
   defs.forEach(d => {
     const c = d.ctx; if (!c) return;
     const W=440,H=260; let yr = d.yr, yt = d.yt;
-    if (yr[1] === null){ const mx = Math.max(1, ...SCAN.X)*1.1; yr = [0, mx]; const step = Math.pow(10, Math.floor(Math.log10(mx))); yt = []; for (let v=0; v<=mx; v+=step) yt.push(+v.toFixed(3)); }
+    if (yr[1] === null){ const mx = Math.max(1, ...SCAN.X.filter(isFinite))*1.1; yr = [0, mx]; const step = Math.pow(10, Math.floor(Math.log10(mx))); yt = []; for (let i=0; i*step<=mx && i<=20; i++) yt.push(+(i*step).toFixed(3)); }   // integer tick index, bounded
     const ax = axes(c, W, H, [44,16,14,40], [1,4], yr, [1,2,3,4], yt, kTlab, d.lab);
     c.strokeStyle=C.muted; c.setLineDash([3,4]); c.lineWidth=1; c.beginPath(); c.moveTo(ax.X(TC_ONS),16); c.lineTo(ax.X(TC_ONS),H-40); c.stroke(); c.setLineDash([]);
     if (d.key === 'M'){ c.strokeStyle=C.exact; c.lineWidth=2; c.beginPath(); for (let i=0;i<=300;i++){ const T=1+3*i/300; const y=ax.Y(onsagerM(T)); i?c.lineTo(ax.X(T),y):c.moveTo(ax.X(T),y); } c.stroke(); }
@@ -897,8 +899,11 @@ function redrawAll(){ latRender(); twoRender(); chainInfo(); chainDraw(); mfRend
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-const vis = {chain:true, mc:true, cr:true};
-const io = new IntersectionObserver(es => es.forEach(e => { vis[e.target.dataset.key] = e.isIntersecting; }));
+// crCanvas and bs1 both drive the 'cr' work: remember each element's visibility and OR them per key,
+// so an "offscreen" notice for one cannot stop the other while it is still on screen.
+const vis = {chain:true, mc:true, cr:true}, elVis = new Map();
+const io = new IntersectionObserver(es => { es.forEach(e => elVis.set(e.target, e.isIntersecting));
+  Object.keys(vis).forEach(k => { const els = [...elVis.keys()].filter(el => el.dataset.key === k); if (els.length) vis[k] = els.some(el => elVis.get(el)); }); });
 [['chainCanvas','chain'],['mcCanvas','mc'],['crCanvas','cr'],['bs1','cr']].forEach(([id,k]) => { $(id).dataset.key = k; io.observe($(id)); });
 let infoT = 0, corrT = 0, lastT = performance.now();
 function loop(now){
