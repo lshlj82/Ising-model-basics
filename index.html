@@ -261,7 +261,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <div class="eq multi"><span class="eqp">\( \displaystyle Z_i = 2\cosh(\beta\varepsilon n\bar{s}), \)</span><span class="eqp">\( \displaystyle \bar{s}_i = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
     <p>Up to here this is exact. The approximation is to assume there are no fluctuations, so every neighborhood is typical and \(\bar{s}_i = \bar{s}\), the same idea used for the van der Waals equation:</p>
     <div class="eq"><span class="boxed">\( \displaystyle \bar{s} = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
-    <p>Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
+    <p>Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. At \(\beta\varepsilon n = 1\) exactly the slope is 1, yet \(\bar{s} = 0\) is still a (marginal) minimum of the free energy, held by the \(\bar{s}^4\) term. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
     <div class="eq"><span class="boxed">\( \displaystyle k_{\mathrm{B}}T_c = n\varepsilon \)</span></div>
     <p>proportional to \(\varepsilon\) and to \(n\): more neighbors take more thermal energy to disorder. In one dimension it predicts \(T_c = 2\varepsilon/k_{\mathrm{B}}\), which we know is wrong, but the approximation improves with dimension (it becomes exact above four). Problem 8.22 adds a field, giving each dipole \(\mp\mu_B B\) and \(\bar{s} = \tanh[\beta(\varepsilon n\bar{s} + \mu_B B)]\).</p>
   </div>
@@ -377,7 +377,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 
   <h3>Measuring the thermodynamics</h3>
   <div class="prose">
-    <p>The lecture’s Python code scans the temperature, equilibrates, and then averages the energy, magnetization, heat capacity, and susceptibility. This does the same in your browser on a smaller lattice, using fluctuations: \(C = (\langle U^2\rangle - \langle U\rangle^2)/k_{\mathrm{B}}T^2\) and \(\chi \propto (\langle M^2\rangle - \langle |M|\rangle^2)/k_{\mathrm{B}}T\).</p>
+    <p>The lecture’s Python code scans the temperature, equilibrates, and then averages the energy, magnetization, heat capacity, and susceptibility. This does the same in your browser on a smaller lattice, using fluctuations: \(C = (\langle U^2\rangle - \langle U\rangle^2)/k_{\mathrm{B}}T^2\) and \(\chi_{\mathrm{abs}} \propto (\langle M^2\rangle - \langle |M|\rangle^2)/k_{\mathrm{B}}T\). The \(|M|\) version is used because a finite lattice at \(B = 0\) flips now and then between \(\pm M\): the standard \(\chi \propto \langle M^2\rangle - \langle M\rangle^2\) would count those flips below \(T_c\). It is not the standard response, though: above \(T_c\) it comes out smaller, because \(\langle |M|\rangle^2 \neq 0\) even for a symmetric distribution, so use it for the location of the peak rather than for amplitudes.</p>
   </div>
   <div class="ctl btns" style="margin-top:1rem">
     <button type="button" id="scanBtn">Run a temperature scan</button>
@@ -387,7 +387,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <div class="canvas-holder"><canvas id="sc0" aria-label="Energy per dipole versus temperature"></canvas></div>
     <div class="canvas-holder"><canvas id="sc1" aria-label="Magnetization per dipole versus temperature"></canvas></div>
     <div class="canvas-holder"><canvas id="sc2" aria-label="Heat capacity per dipole versus temperature"></canvas></div>
-    <div class="canvas-holder"><canvas id="sc3" aria-label="Susceptibility per dipole versus temperature"></canvas></div>
+    <div class="canvas-holder"><canvas id="sc3" aria-label="Susceptibility χ_abs per dipole versus temperature"></canvas></div>
   </div>
   <p class="cap">A 24 × 24 lattice, 33 temperatures, 600 sweeps to equilibrate and 1500 to measure at each. Green: Onsager’s exact magnetization. The peaks sharpen with larger lattices, toward the true divergences at \(T_c\).</p>
 </section>
@@ -675,13 +675,16 @@ function mfSolutions(t, h){
   const f = s => Math.tanh((s+h)/t) - s, roots = [], n = 4000;
   let a = -1.0001, fa = f(a);
   for (let k=1;k<=n;k++){ const b = -1.0001 + 2.0002*k/n, fb = f(b); if (fa === 0) roots.push(a); else if (fa*fb < 0){ let lo=a, hi=b; for (let it=0;it<60;it++){ const mid=(lo+hi)/2; (f(lo)*f(mid) <= 0) ? hi=mid : lo=mid; } roots.push((lo+hi)/2); } a = b; fa = fb; }
-  return roots.map(s => ({s, stable: (1/t)/Math.pow(Math.cosh((s+h)/t),2) < 1}));
+  // slope of the tanh below 1: a minimum of the free energy; above 1: a maximum. At slope 1 (t = 1, h = 0, s̄ = 0) the
+  // sign change of s − tanh((s+h)/t) decides: there s̄ = 0 is a marginal minimum, held by the s̄⁴ term, not unstable.
+  return roots.map(s => { const k = (1/t)/Math.pow(Math.cosh((s+h)/t),2); if (Math.abs(k-1) > 1e-9) return {s, stable: k < 1};
+    const d = x => x - Math.tanh((x+h)/t), a = d(s-1e-3), b = d(s+1e-3); return {s, stable: a < 0 && b > 0, marginal: a < 0 && b > 0}; });
 }
 const hStar = t => t >= 1 ? 0 : Math.sqrt(1-t) - t*Math.atanh(Math.sqrt(1-t));
 function mfRender(){
   const {t, h} = MF, sols = mfSolutions(t, h);
   $('mfTOut').textContent = t.toFixed(2); $('mfBOut').textContent = signed(h, 2);
-  $('mfSol').innerHTML = sols.map((o,i) => '<dt>' + (o.stable ? 'Stable' : 'Unstable') + ' solution</dt><dd>' + '<i>s̄</i> = ' + signed(o.s, 3) + '</dd>').join('') + '<dt class="sep"></dt><dt>' + (sols.length === 1 ? 'One solution' : 'Three solutions') + '</dt><dd></dd>';
+  $('mfSol').innerHTML = sols.map((o,i) => '<dt>' + (o.marginal ? 'Marginally stable (critical)' : o.stable ? 'Stable' : 'Unstable') + ' solution</dt><dd>' + '<i>s̄</i> = ' + signed(o.s, 3) + '</dd>').join('') + '<dt class="sep"></dt><dt>' + (sols.length === 1 ? 'One solution' : 'Three solutions') + '</dt><dd></dd>';
   // graphical solution
   let c = gsCtx; if (c){
     const W=340,H=330, ax = axes(c, W, H, [36,16,12,38], [-1.5,1.5], [-1.5,1.5], [-1,0,1], [-1,0,1], [['s̄','i']], null);
@@ -829,7 +832,7 @@ function scanDraw(){
     {ctx:scCtx[0], key:'E', yr:[-2.1,0], yt:[-2,-1,0], lab:[['U','i'],[' / ','r'],['Nε','i']]},
     {ctx:scCtx[1], key:'M', yr:[0,1.05], yt:[0,0.5,1], lab:[['|','r'],['M','i'],['| / ','r'],['N','i']]},
     {ctx:scCtx[2], key:'Cv', yr:[0,2.2], yt:[0,1,2], lab:[['C','i'],[' / ','r'],['Nk','i'],['B','sub']]},
-    {ctx:scCtx[3], key:'X', yr:[0,null], yt:null, lab:[['χ','i'],[' per dipole (arb.)','s']]}
+    {ctx:scCtx[3], key:'X', yr:[0,null], yt:null, lab:[['χ','i'],['abs','sub'],[' per dipole (arb.)','s']]}
   ];
   defs.forEach(d => {
     const c = d.ctx; if (!c) return;
