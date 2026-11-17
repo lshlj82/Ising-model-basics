@@ -2,6 +2,24 @@
 <html lang="en-US">
 <head>
 <meta charset="utf-8">
+<!-- lang-toggle:head -->
+<script>(function(){var l='en';try{if(localStorage.getItem('lshlj82-demo-lang')==='ko')l='ko'}catch(e){}window.LANG=l;document.documentElement.dataset.lang=l;window.tr=function(en,ko){return window.LANG==='ko'&&ko!=null?ko:en};})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+#langBtn{position:fixed;z-index:21;top:calc(env(safe-area-inset-top,0px) + 12px);right:calc(env(safe-area-inset-right,0px) + 60px);
+  min-width:40px;height:40px;padding:0 10px;border-radius:20px;display:grid;place-items:center;cursor:pointer;font:600 14px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  background:var(--lb-bg,rgba(255,255,255,.92));color:var(--lb-fg,#1d2633);border:1px solid var(--lb-bd,rgba(20,30,45,.18));box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#langBtn:hover{border-color:currentColor}
+#langBtn:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+:root[data-theme="dark"] #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}}
+:root[data-lang="ko"] body{word-break:keep-all}
+:root[data-lang="ko"]{--sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--serif:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--ui-font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+:root[data-lang="ko"] body{font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+
+@media print{#langBtn{display:none}}
+</style>
+<!-- lang-toggle:head-end -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Ising Model, Interactively</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -133,60 +151,60 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 <div class="wrap">
 
 <header class="hero">
-  <p class="credit">An interactive demo created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee (Chapter 8, Section 8.2, The Ising Model of a Ferromagnet)</p>
-  <h1>The Ising Model</h1>
-  <p class="lede">Give each atomic dipole only one rule, prefer to point the same way as its neighbors, and a lattice of them can magnetize spontaneously below a critical temperature. The simplest model of interacting particles is also a gateway to phase transitions, critical exponents, and the renormalization group.</p>
+  <p class="credit" data-k="k1">An interactive demo created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee (Chapter 8, Section 8.2, The Ising Model of a Ferromagnet)</p>
+  <h1 data-k="k2">The Ising Model</h1>
+  <p class="lede" data-k="k3">Give each atomic dipole only one rule, prefer to point the same way as its neighbors, and a lattice of them can magnetize spontaneously below a critical temperature. The simplest model of interacting particles is also a gateway to phase transitions, critical exponents, and the renormalization group.</p>
 </header>
 
 <!-- ============ FERROMAGNETS ============ -->
 <section id="ferro" aria-labelledby="h-ferro">
-  <h2 id="h-ferro">Ferromagnets</h2>
+  <h2 id="h-ferro" data-k="k4">Ferromagnets</h2>
   <div class="prose">
-    <p>In an ideal paramagnet, each dipole responds only to an external field. In real materials, atomic dipoles are influenced by their neighbors: the energy depends on whether neighboring dipoles are parallel or antiparallel. When they prefer to align parallel, even with no external field, the material is a <strong>ferromagnet</strong> (iron is the most familiar example); when they prefer antiparallel, it is an <strong>antiferromagnet</strong> (Cr, NiO, FeO). The spontaneous, long-range order shows up as a net nonzero magnetization, which a paramagnet can’t have.</p>
-    <p>Raising the temperature causes random fluctuations that reduce the magnetization. For every ferromagnet there is a critical temperature, the <strong>Curie temperature</strong> (about 1043 K for iron), above which the net magnetization vanishes and the material becomes a paramagnet. Even below it, a piece of iron needn’t be magnetized: it breaks up into domains, each with billions of aligned dipoles but pointing in different directions. Heating it, applying a field, and cooling it again aligns the domains into a permanent magnet.</p>
-    <p>The Ising model describes a single domain. It keeps only the tendency of neighbors to align and assumes a preferred axis, so each dipole points either parallel or antiparallel to it. It is not an accurate model of a real ferromagnet at low temperature, where the quantum mechanics is subtler and the excitations are long-wavelength magnons, but it turns out to be much more accurate near the Curie temperature.</p>
+    <p data-k="k5">In an ideal paramagnet, each dipole responds only to an external field. In real materials, atomic dipoles are influenced by their neighbors: the energy depends on whether neighboring dipoles are parallel or antiparallel. When they prefer to align parallel, even with no external field, the material is a <strong>ferromagnet</strong> (iron is the most familiar example); when they prefer antiparallel, it is an <strong>antiferromagnet</strong> (Cr, NiO, FeO). The spontaneous, long-range order shows up as a net nonzero magnetization, which a paramagnet can’t have.</p>
+    <p data-k="k6">Raising the temperature causes random fluctuations that reduce the magnetization. For every ferromagnet there is a critical temperature, the <strong>Curie temperature</strong> (about 1043 K for iron), above which the net magnetization vanishes and the material becomes a paramagnet. Even below it, a piece of iron needn’t be magnetized: it breaks up into domains, each with billions of aligned dipoles but pointing in different directions. Heating it, applying a field, and cooling it again aligns the domains into a permanent magnet.</p>
+    <p data-k="k7">The Ising model describes a single domain. It keeps only the tendency of neighbors to align and assumes a preferred axis, so each dipole points either parallel or antiparallel to it. It is not an accurate model of a real ferromagnet at low temperature, where the quantum mechanics is subtler and the excitations are long-wavelength magnons, but it turns out to be much more accurate near the Curie temperature.</p>
   </div>
 </section>
 
 <!-- ============ THE MODEL ============ -->
 <section id="model" aria-labelledby="h-model">
-  <h2 id="h-model">The model</h2>
+  <h2 id="h-model" data-k="k8">The model</h2>
   <div class="prose">
-    <p>Let \(s_i = +1\) when dipole \(i\) points up and \(s_i = -1\) when it points down. A pair of neighboring dipoles contributes \(-\varepsilon\) when parallel and \(+\varepsilon\) when antiparallel, which is \(-\varepsilon s_i s_j\) in either case. The total energy, summed over neighboring pairs, and the partition function, summed over all sets of alignments, are</p>
+    <p data-k="k9">Let \(s_i = +1\) when dipole \(i\) points up and \(s_i = -1\) when it points down. A pair of neighboring dipoles contributes \(-\varepsilon\) when parallel and \(+\varepsilon\) when antiparallel, which is \(-\varepsilon s_i s_j\) in either case. The total energy, summed over neighboring pairs, and the partition function, summed over all sets of alignments, are</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle U = -\varepsilon \sum_{\text{neighboring pairs } i,j} s_i s_j, \)</span><span class="eqp">\( \displaystyle Z = \sum_{\{s_i\}} e^{-\beta U} \)</span></div>
-    <p>With \(N\) dipoles, that sum has \(2^N\) terms, so brute force is hopeless for any real sample. For a 4 × 4 lattice, though, there are only \(2^{16} = 65{,}536\) states, few enough for the computer to add up exactly. Click dipoles to flip them; the dots mark parallel and antiparallel bonds (Problem 8.15).</p>
+    <p data-k="k10">With \(N\) dipoles, that sum has \(2^N\) terms, so brute force is hopeless for any real sample. For a 4 × 4 lattice, though, there are only \(2^{16} = 65{,}536\) states, few enough for the computer to add up exactly. Click dipoles to flip them; the dots mark parallel and antiparallel bonds (Problem 8.15).</p>
   </div>
   <div class="fig">
     <div>
       <div class="canvas-holder" style="max-width:420px"><canvas id="latCanvas" tabindex="0" aria-label="A 4 by 4 lattice of dipoles; click or press Enter on a dipole to flip it"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k11">
         <span><span class="swatch dot" style="background:var(--par)"></span>Parallel bond, \(-\varepsilon\)</span>
         <span><span class="swatch dot" style="background:var(--anti)"></span>Antiparallel bond, \(+\varepsilon\)</span>
       </div>
-      <p class="cap">Click a dipole to flip it. With the keyboard, use the arrow keys to move and Enter to flip.</p>
+      <p class="cap" data-k="k12">Click a dipole to flip it. With the keyboard, use the arrow keys to move and Enter to flip.</p>
     </div>
     <div class="panel">
       <div class="ctl btns">
-        <button type="button" id="latFig">Figure 8.4</button>
-        <button type="button" id="latUp">All up</button>
-        <button type="button" id="latChk">Checkerboard</button>
-        <button type="button" id="latRnd">Random</button>
+        <button type="button" id="latFig" data-k="k13">Figure 8.4</button>
+        <button type="button" id="latUp" data-k="k14">All up</button>
+        <button type="button" id="latChk" data-k="k15">Checkerboard</button>
+        <button type="button" id="latRnd" data-k="k16">Random</button>
       </div>
       <dl class="stats">
-        <dt>Parallel bonds</dt><dd id="lP">–</dd>
-        <dt>Antiparallel bonds</dt><dd id="lA">–</dd>
-        <dt>Energy \(U\)</dt><dd id="lU">–</dd>
+        <dt data-k="k17">Parallel bonds</dt><dd id="lP">–</dd>
+        <dt data-k="k18">Antiparallel bonds</dt><dd id="lA">–</dd>
+        <dt data-k="k19">Energy \(U\)</dt><dd id="lU">–</dd>
       </dl>
-      <h3 style="margin-top:1.25rem">All 65,536 states at temperature \(T\)</h3>
+      <h3 style="margin-top:1.25rem" data-k="k20">All 65,536 states at temperature \(T\)</h3>
       <div class="ctl">
-        <label for="exT"><span class="lt"><span class="sr-only">Temperature kBT/ε (all 65,536 states)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="exTOut"></output></label>
+        <label for="exT"><span data-k="k21"><span class="lt"><span class="sr-only">Temperature kBT/ε (all 65,536 states)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span></span> <output id="exTOut"></output></label>
         <input type="range" id="exT" min="0.2" max="6" step="0.05" value="2.5">
       </div>
       <dl class="stats">
         <dt>\(\langle U\rangle/\varepsilon\)</dt><dd id="exU">–</dd>
         <dt>\(\langle |M|\rangle/N\)</dt><dd id="exM">–</dd>
         <dt>\(C/k_{\mathrm{B}}\)</dt><dd id="exC">–</dd>
-        <dt>Probability of this state</dt><dd id="exP">–</dd>
+        <dt data-k="k22">Probability of this state</dt><dd id="exP">–</dd>
       </dl>
     </div>
   </div>
@@ -194,16 +212,16 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 
 <!-- ============ TWO DIPOLES ============ -->
 <section id="two" aria-labelledby="h-two">
-  <h2 id="h-two">Two dipoles</h2>
+  <h2 id="h-two" data-k="k23">Two dipoles</h2>
   <div class="prose">
-    <p>Problem 8.17. With just two dipoles, the states \(\uparrow\uparrow\) and \(\downarrow\downarrow\) have energy \(-\varepsilon\), and \(\uparrow\downarrow\) and \(\downarrow\uparrow\) have \(+\varepsilon\), so</p>
+    <p data-k="k24">Problem 8.17. With just two dipoles, the states \(\uparrow\uparrow\) and \(\downarrow\downarrow\) have energy \(-\varepsilon\), and \(\uparrow\downarrow\) and \(\downarrow\uparrow\) have \(+\varepsilon\), so</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle Z = 2\left(e^{\beta\varepsilon} + e^{-\beta\varepsilon}\right) = 4\cosh\beta\varepsilon, \)</span><span class="eqp">\( \displaystyle P_{\text{parallel}} = \frac{1}{1 + e^{-2\beta\varepsilon}}, \)</span><span class="eqp">\( \displaystyle U = -\varepsilon\tanh\beta\varepsilon \)</span></div>
-    <p>Both dipoles pointing up is more likely than one up and one down when \(\tfrac12 P_{\text{parallel}} > P_{\text{antiparallel}}\), which works out to \(e^{2\beta\varepsilon} > 2\), that is \(T < 2\varepsilon/(k_{\mathrm{B}}\ln 2) \approx 2.885\,\varepsilon/k_{\mathrm{B}}\).</p>
+    <p data-k="k25">Both dipoles pointing up is more likely than one up and one down when \(\tfrac12 P_{\text{parallel}} > P_{\text{antiparallel}}\), which works out to \(e^{2\beta\varepsilon} > 2\), that is \(T < 2\varepsilon/(k_{\mathrm{B}}\ln 2) \approx 2.885\,\varepsilon/k_{\mathrm{B}}\).</p>
   </div>
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="twoCanvas" aria-label="Probabilities and average energy of two coupled dipoles versus temperature"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k26">
         <span><span class="swatch line" style="background:var(--par)"></span>\(P_{\text{parallel}}\)</span>
         <span><span class="swatch line" style="background:var(--anti)"></span>\(P_{\text{antiparallel}}\)</span>
         <span><span class="swatch dash" style="border-color:var(--ink)"></span>\(U/\varepsilon\) (right axis)</span>
@@ -211,7 +229,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="twoT"><span class="lt"><span class="sr-only">Temperature kBT/ε (two dipoles)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="twoTOut"></output></label>
+        <label for="twoT"><span data-k="k27"><span class="lt"><span class="sr-only">Temperature kBT/ε (two dipoles)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span></span> <output id="twoTOut"></output></label>
         <input type="range" id="twoT" min="0.1" max="10" step="0.05" value="2">
       </div>
       <dl class="stats">
@@ -226,129 +244,129 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 
 <!-- ============ 1D ============ -->
 <section id="oned" aria-labelledby="h-oned">
-  <h2 id="h-oned">The exact solution in one dimension</h2>
+  <h2 id="h-oned" data-k="k28">The exact solution in one dimension</h2>
   <div class="prose">
-    <p>A real ferromagnet is three-dimensional and not exactly solvable, but the one-dimensional chain is. With \(U = -\varepsilon(s_1s_2 + s_2s_3 + \cdots + s_{N-1}s_N)\), the last sum gives \(\sum_{s_N = \pm1} e^{\beta\varepsilon s_{N-1}s_N} = 2\cosh\beta\varepsilon\) whatever \(s_{N-1}\) is, and so on down the chain:</p>
+    <p data-k="k29">A real ferromagnet is three-dimensional and not exactly solvable, but the one-dimensional chain is. With \(U = -\varepsilon(s_1s_2 + s_2s_3 + \cdots + s_{N-1}s_N)\), the last sum gives \(\sum_{s_N = \pm1} e^{\beta\varepsilon s_{N-1}s_N} = 2\cosh\beta\varepsilon\) whatever \(s_{N-1}\) is, and so on down the chain:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle Z = 2^N\cosh^{N-1}(\beta\varepsilon) \approx \left(2\cosh\beta\varepsilon\right)^N, \)</span><span class="eqp">\( \displaystyle \bar{U} = -\frac{\partial}{\partial\beta}\ln Z = -N\varepsilon\tanh\beta\varepsilon \)</span></div>
-    <p>These are exactly the results for a two-state paramagnet, with \(\mu B\) replaced by \(\varepsilon\), except that here the dipoles line up with each other rather than with a field. As \(T \to 0\), \(\bar{U} \to -N\varepsilon\) (perfectly aligned); as \(T \to \infty\), \(\bar{U} \to 0\). The order sets in gradually, with no abrupt transition at any nonzero temperature: each dipole has only two neighbors, too few to sustain long-range order. The chain below runs the Metropolis algorithm described further down; the domains grow as it cools, but never take over completely.</p>
+    <p data-k="k30">These are exactly the results for a two-state paramagnet, with \(\mu B\) replaced by \(\varepsilon\), except that here the dipoles line up with each other rather than with a field. As \(T \to 0\), \(\bar{U} \to -N\varepsilon\) (perfectly aligned); as \(T \to \infty\), \(\bar{U} \to 0\). The order sets in gradually, with no abrupt transition at any nonzero temperature: each dipole has only two neighbors, too few to sustain long-range order. The chain below runs the Metropolis algorithm described further down; the domains grow as it cools, but never take over completely.</p>
   </div>
   <div class="canvas-holder" style="margin-top:1.25rem"><canvas id="chainCanvas" class="pix" aria-label="A one-dimensional Ising chain evolving at the chosen temperature"></canvas></div>
   <div class="fig" style="margin-top:1rem">
     <div class="prose">
-      <p class="note" style="margin:0">Also note that the average dipole alignment is always \(\bar{s} = 0\), because flipping every dipole doesn’t change the energy. How can any Ising system then have \(\bar{s} \neq 0\)? The answer is <strong>spontaneous symmetry breaking</strong>, sketched in the mean-field section below. And the paramagnet’s \(M = -U/B\) doesn’t carry over either, since the probabilities of up and down are no longer that simple.</p>
+      <p class="note" style="margin:0" data-k="k31">Also note that the average dipole alignment is always \(\bar{s} = 0\), because flipping every dipole doesn’t change the energy. How can any Ising system then have \(\bar{s} \neq 0\)? The answer is <strong>spontaneous symmetry breaking</strong>, sketched in the mean-field section below. And the paramagnet’s \(M = -U/B\) doesn’t carry over either, since the probabilities of up and down are no longer that simple.</p>
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="chT"><span class="lt"><span class="sr-only">Temperature kBT/ε (one-dimensional chain)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="chTOut"></output></label>
+        <label for="chT"><span data-k="k32"><span class="lt"><span class="sr-only">Temperature kBT/ε (one-dimensional chain)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span></span> <output id="chTOut"></output></label>
         <input type="range" id="chT" min="0.3" max="4" step="0.05" value="1">
       </div>
       <div class="ctl btns"><button type="button" id="chPlay">Pause</button></div>
       <dl class="stats">
-        <dt>\(\bar{U}/N\varepsilon\), exact</dt><dd id="chUe">–</dd>
-        <dt>\(\bar{U}/N\varepsilon\), this chain</dt><dd id="chUm">–</dd>
-        <dt>Typical domain size, exact</dt><dd id="chXi">–</dd>
+        <dt data-k="k33">\(\bar{U}/N\varepsilon\), exact</dt><dd id="chUe">–</dd>
+        <dt data-k="k34">\(\bar{U}/N\varepsilon\), this chain</dt><dd id="chUm">–</dd>
+        <dt data-k="k35">Typical domain size, exact</dt><dd id="chXi">–</dd>
       </dl>
-      <p class="cap" style="margin:.75rem 0 0">Domain size here is the correlation length, \(-1/\ln\tanh\beta\varepsilon\), in units of the spacing. It is finite at every \(T > 0\). 600 dipoles, wrapped around.</p>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k36">Domain size here is the correlation length, \(-1/\ln\tanh\beta\varepsilon\), in units of the spacing. It is finite at every \(T > 0\). 600 dipoles, wrapped around.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ MEAN FIELD ============ -->
 <section id="mfa" aria-labelledby="h-mfa">
-  <h2 id="h-mfa">The mean-field approximation</h2>
+  <h2 id="h-mfa" data-k="k37">The mean-field approximation</h2>
   <div class="prose">
-    <p>A very crude approximation can “solve” the Ising model in any dimension and shows why dimensionality matters. Focus on one dipole with \(n\) nearest neighbors (2 in one dimension, 4 on a square lattice, 6, 8, or 12 for simple, body-centered, or face-centered cubic). If \(\bar{s}\) is the average alignment of its neighbors, \(E_\uparrow = -\varepsilon n\bar{s}\) and \(E_\downarrow = +\varepsilon n\bar{s}\), so</p>
+    <p data-k="k38">A very crude approximation can “solve” the Ising model in any dimension and shows why dimensionality matters. Focus on one dipole with \(n\) nearest neighbors (2 in one dimension, 4 on a square lattice, 6, 8, or 12 for simple, body-centered, or face-centered cubic). If \(\bar{s}\) is the average alignment of its neighbors, \(E_\uparrow = -\varepsilon n\bar{s}\) and \(E_\downarrow = +\varepsilon n\bar{s}\), so</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle Z_i = 2\cosh(\beta\varepsilon n\bar{s}), \)</span><span class="eqp">\( \displaystyle \bar{s}_i = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
-    <p>Up to here this is exact. The approximation is to assume there are no fluctuations, so every neighborhood is typical and \(\bar{s}_i = \bar{s}\), the same idea used for the van der Waals equation:</p>
+    <p data-k="k39">Up to here this is exact. The approximation is to assume there are no fluctuations, so every neighborhood is typical and \(\bar{s}_i = \bar{s}\), the same idea used for the van der Waals equation:</p>
     <div class="eq"><span class="boxed">\( \displaystyle \bar{s} = \tanh(\beta\varepsilon n\bar{s}) \)</span></div>
-    <p>Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. At \(\beta\varepsilon n = 1\) exactly the slope is 1, yet \(\bar{s} = 0\) is still a (marginal) minimum of the free energy, held by the \(\bar{s}^4\) term. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
+    <p data-k="k40">Solve it graphically. When \(\beta\varepsilon n < 1\), the slope of the tanh at the origin is less than 1, and the only solution is \(\bar{s} = 0\), which is stable. At \(\beta\varepsilon n = 1\) exactly the slope is 1, yet \(\bar{s} = 0\) is still a (marginal) minimum of the free energy, held by the \(\bar{s}^4\) term. When \(\beta\varepsilon n > 1\), \(\bar{s} = 0\) becomes unstable and two stable solutions appear, equally likely to be positive or negative. The system must choose one: the symmetry is spontaneously broken. The critical temperature is</p>
     <div class="eq"><span class="boxed">\( \displaystyle k_{\mathrm{B}}T_c = n\varepsilon \)</span></div>
-    <p>proportional to \(\varepsilon\) and to \(n\): more neighbors take more thermal energy to disorder. In one dimension it predicts \(T_c = 2\varepsilon/k_{\mathrm{B}}\), which we know is wrong, but the approximation improves with dimension (it becomes exact above four). Problem 8.22 adds a field, giving each dipole \(\mp\mu_B B\) and \(\bar{s} = \tanh[\beta(\varepsilon n\bar{s} + \mu_B B)]\).</p>
+    <p data-k="k41">proportional to \(\varepsilon\) and to \(n\): more neighbors take more thermal energy to disorder. In one dimension it predicts \(T_c = 2\varepsilon/k_{\mathrm{B}}\), which we know is wrong, but the approximation improves with dimension (it becomes exact above four). Problem 8.22 adds a field, giving each dipole \(\mp\mu_B B\) and \(\bar{s} = \tanh[\beta(\varepsilon n\bar{s} + \mu_B B)]\).</p>
   </div>
   <div class="fig">
     <div>
       <div class="two" style="margin-top:0">
         <div>
           <div class="canvas-holder"><canvas id="gsCanvas" aria-label="Graphical solution of the mean-field self-consistency equation"></canvas></div>
-          <div class="legend">
+          <div class="legend" data-k="k42">
             <span><span class="swatch dot" style="background:var(--exact)"></span>Stable</span>
             <span><span class="swatch dot" style="background:var(--anti)"></span>Unstable</span>
           </div>
         </div>
         <div>
           <div class="canvas-holder"><canvas id="pdCanvas" aria-label="Region of the temperature-field plane with three solutions"></canvas></div>
-          <p class="cap">Shaded: three solutions (two stable). Elsewhere: one.</p>
+          <p class="cap" data-k="k43">Shaded: three solutions (two stable). Elsewhere: one.</p>
         </div>
       </div>
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="mfT"><span class="lt"><span class="sr-only">Temperature kBT/nε (mean field)</span>\(k_{\mathrm{B}}T/n\varepsilon\)</span> <output id="mfTOut"></output></label>
+        <label for="mfT"><span data-k="k44"><span class="lt"><span class="sr-only">Temperature kBT/nε (mean field)</span>\(k_{\mathrm{B}}T/n\varepsilon\)</span></span> <output id="mfTOut"></output></label>
         <input type="range" id="mfT" min="0.05" max="2" step="0.01" value="0.7">
       </div>
       <div class="ctl">
-        <label for="mfB"><span class="lt"><span class="sr-only">Field μB·B/nε (mean field)</span>\(\mu_B B/n\varepsilon\)</span> <output id="mfBOut"></output></label>
+        <label for="mfB"><span data-k="k45"><span class="lt"><span class="sr-only">Field μB·B/nε (mean field)</span>\(\mu_B B/n\varepsilon\)</span></span> <output id="mfBOut"></output></label>
         <input type="range" id="mfB" min="-1.2" max="1.2" step="0.01" value="0">
       </div>
       <dl class="stats" id="mfSol"></dl>
-      <p class="cap" style="margin:.75rem 0 0">With a field the three-solution region shrinks: it requires \(|\mu_B B| < n\varepsilon\), and that limit is reached only as \(T \to 0\).</p>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k46">With a field the three-solution region shrinks: it requires \(|\mu_B B| < n\varepsilon\), and that limit is reached only as \(T \to 0\).</p>
     </div>
   </div>
 
-  <h3>Near the critical point</h3>
+  <h3 data-k="k47">Near the critical point</h3>
   <div class="prose">
-    <p>Problem 8.24. Using \(\tanh x \approx x - x^3/3\), the magnetization just below \(T_c\) is \(\bar{s} \approx \sqrt{3/T_c}\,(T_c - T)^{1/2}\), a critical exponent \(\beta = 1/2\). The susceptibility \(\chi = (\partial M/\partial B)_T\) diverges as \(\mu_B/k_{\mathrm{B}}(T - T_c)\) above \(T_c\) and half that below, so \(\gamma = 1\) on both sides. The exact exponents differ: \(\beta = 1/8\) and \(\gamma = 7/4\) in two dimensions (from Onsager’s solution), and \(\beta \approx 1/3\), \(\gamma \approx 1.24\) in three. Here is the mean-field magnetization for a square lattice (\(n = 4\), \(T_c = 4\varepsilon/k_{\mathrm{B}}\)) against Onsager’s exact result (\(T_c \approx 2.27\,\varepsilon/k_{\mathrm{B}}\)).</p>
+    <p data-k="k48">Problem 8.24. Using \(\tanh x \approx x - x^3/3\), the magnetization just below \(T_c\) is \(\bar{s} \approx \sqrt{3/T_c}\,(T_c - T)^{1/2}\), a critical exponent \(\beta = 1/2\). The susceptibility \(\chi = (\partial M/\partial B)_T\) diverges as \(\mu_B/k_{\mathrm{B}}(T - T_c)\) above \(T_c\) and half that below, so \(\gamma = 1\) on both sides. The exact exponents differ: \(\beta = 1/8\) and \(\gamma = 7/4\) in two dimensions (from Onsager’s solution), and \(\beta \approx 1/3\), \(\gamma \approx 1.24\) in three. Here is the mean-field magnetization for a square lattice (\(n = 4\), \(T_c = 4\varepsilon/k_{\mathrm{B}}\)) against Onsager’s exact result (\(T_c \approx 2.27\,\varepsilon/k_{\mathrm{B}}\)).</p>
   </div>
   <div class="two">
     <div>
       <div class="canvas-holder"><canvas id="mtCanvas" aria-label="Magnetization versus temperature, mean field versus exact"></canvas></div>
       <div class="legend">
-        <span><span class="swatch line" style="background:var(--mf)"></span>Mean field</span>
-        <span><span class="swatch line" style="background:var(--exact)"></span>Onsager (exact)</span>
-        <label class="check" style="font-size:.85rem"><input type="checkbox" id="mtLog"> Log-log near \(T_c\)<span class="sr-only"> Tc</span></label>
+        <span data-k="k49"><span><span class="swatch line" style="background:var(--mf)"></span>Mean field</span>
+        <span><span class="swatch line" style="background:var(--exact)"></span>Onsager (exact)</span></span>
+        <label class="check" style="font-size:.85rem"><input type="checkbox" id="mtLog"> <span data-k="k50">Log-log near \(T_c\)<span class="sr-only"> Tc</span></span></label>
       </div>
     </div>
     <div>
       <div class="canvas-holder"><canvas id="chiCanvas" aria-label="Mean-field susceptibility versus temperature"></canvas></div>
-      <p class="cap">Mean-field susceptibility, in units of \(\mu_B/\varepsilon\), with \(T\) in units of \(\varepsilon/k_{\mathrm{B}}\): \(1/(T-T_c)\) above, \(1/2(T_c-T)\) below.</p>
+      <p class="cap" data-k="k51">Mean-field susceptibility, in units of \(\mu_B/\varepsilon\), with \(T\) in units of \(\varepsilon/k_{\mathrm{B}}\): \(1/(T-T_c)\) above, \(1/2(T_c-T)\) below.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ MONTE CARLO ============ -->
 <section id="mc" aria-labelledby="h-mc">
-  <h2 id="h-mc">Monte Carlo simulation</h2>
+  <h2 id="h-mc" data-k="k52">Monte Carlo simulation</h2>
   <div class="prose">
-    <p>A 10 × 10 lattice already has \(2^{100} \approx 10^{30}\) states, impossible to enumerate. Sampling a million states at random wouldn’t work well either, since most would be irrelevant. The better idea is <strong>importance sampling</strong>, using the Boltzmann factors themselves as a guide. The <strong>Metropolis algorithm</strong> (1953): pick a dipole at random and compute the energy change \(\Delta U\) its flip would cause. If \(\Delta U \le 0\), flip it; if \(\Delta U > 0\), flip it with probability \(e^{-\Delta U/k_{\mathrm{B}}T}\). Repeat.</p>
-    <p>For two states 1 and 2 that differ by one flip, with \(U_1 \le U_2\), the transition probabilities are \(P(2\to1) = 1/N\) and \(P(1\to2) = (1/N)\,e^{-\beta(U_2-U_1)}\), so their ratio is exactly the ratio of Boltzmann factors. This detailed balance carries over to any sequence of steps, so states occur with the frequencies Boltzmann statistics demands. On a square lattice \(\Delta U = 2\varepsilon s_i(\text{sum of the four neighbors})\) takes only a few values, so the needed exponentials are computed in advance. The edges wrap around (periodic boundary conditions).</p>
+    <p data-k="k53">A 10 × 10 lattice already has \(2^{100} \approx 10^{30}\) states, impossible to enumerate. Sampling a million states at random wouldn’t work well either, since most would be irrelevant. The better idea is <strong>importance sampling</strong>, using the Boltzmann factors themselves as a guide. The <strong>Metropolis algorithm</strong> (1953): pick a dipole at random and compute the energy change \(\Delta U\) its flip would cause. If \(\Delta U \le 0\), flip it; if \(\Delta U > 0\), flip it with probability \(e^{-\Delta U/k_{\mathrm{B}}T}\). Repeat.</p>
+    <p data-k="k54">For two states 1 and 2 that differ by one flip, with \(U_1 \le U_2\), the transition probabilities are \(P(2\to1) = 1/N\) and \(P(1\to2) = (1/N)\,e^{-\beta(U_2-U_1)}\), so their ratio is exactly the ratio of Boltzmann factors. This detailed balance carries over to any sequence of steps, so states occur with the frequencies Boltzmann statistics demands. On a square lattice \(\Delta U = 2\varepsilon s_i(\text{sum of the four neighbors})\) takes only a few values, so the needed exponentials are computed in advance. The edges wrap around (periodic boundary conditions).</p>
   </div>
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="mcCanvas" class="pix" aria-label="Live Monte Carlo simulation of a two-dimensional Ising model"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k55">
         <span><span class="swatch" style="background:var(--up)"></span>Up</span>
         <span><span class="swatch" style="background:var(--down)"></span>Down</span>
         <span id="mcInfo"></span>
       </div>
       <div class="canvas-holder" style="margin-top:.75rem"><canvas id="trCanvas" aria-label="Recent history of energy and magnetization"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k56">
         <span><span class="swatch line" style="background:var(--mc)"></span>Magnetization per dipole</span>
         <span><span class="swatch line" style="background:var(--mf)"></span>Energy per dipole, \(U/N\varepsilon\)</span>
       </div>
     </div>
     <div class="panel">
       <div class="ctl">
-        <label for="mcT"><span class="lt"><span class="sr-only">Temperature kBT/ε (Monte Carlo)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span> <output id="mcTOut"></output></label>
+        <label for="mcT"><span data-k="k57"><span class="lt"><span class="sr-only">Temperature kBT/ε (Monte Carlo)</span>\(k_{\mathrm{B}}T/\varepsilon\)</span></span> <output id="mcTOut"></output></label>
         <input type="range" id="mcT" min="0.5" max="5" step="0.01" value="2.27">
-        <small>Onsager’s exact \(T_c = 2/\ln(1+\sqrt{2}) \approx 2.269\).</small>
-        <div class="btns" style="margin-top:.5rem"><button type="button" id="mcTc" aria-pressed="false">Jump to \(T_c\)</button></div>
+        <span data-k="k58"><small>Onsager’s exact \(T_c = 2/\ln(1+\sqrt{2}) \approx 2.269\).</small></span>
+        <div class="btns" style="margin-top:.5rem"><button type="button" id="mcTc" aria-pressed="false" data-k="k59">Jump to \(T_c\)</button></div>
       </div>
       <div class="ctl">
-        <label for="mcB"><span class="lt">Field \(\mu_B B/\varepsilon\)<span class="sr-only"> μB·B/ε</span></span> <output id="mcBOut"></output></label>
+        <label for="mcB"><span data-k="k60"><span class="lt">Field \(\mu_B B/\varepsilon\)<span class="sr-only"> μB·B/ε</span></span></span> <output id="mcBOut"></output></label>
         <input type="range" id="mcB" min="-1" max="1" step="0.01" value="0">
       </div>
       <div class="ctl">
-        <label for="mcL"><span class="lt">Lattice</span></label>
+        <label for="mcL" data-k="k61"><span class="lt">Lattice</span></label>
         <select id="mcL">
           <option value="45">45 × 45</option>
           <option value="90">90 × 90</option>
@@ -357,30 +375,30 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
         </select>
       </div>
       <div class="ctl">
-        <label for="mcS"><span class="lt">Sweeps per frame</span> <output id="mcSOut"></output></label>
+        <label for="mcS"><span data-k="k62"><span class="lt">Sweeps per frame</span></span> <output id="mcSOut"></output></label>
         <input type="range" id="mcS" min="0" max="4" step="1" value="1">
       </div>
       <div class="ctl btns">
         <button type="button" id="mcPlay">Pause</button>
-        <button type="button" id="mcRand">Random start</button>
-        <button type="button" id="mcCold">All up</button>
+        <button type="button" id="mcRand" data-k="k63">Random start</button>
+        <button type="button" id="mcCold" data-k="k64">All up</button>
       </div>
       <dl class="stats">
-        <dt>Sweeps</dt><dd id="mcSw">0</dd>
+        <dt data-k="k65">Sweeps</dt><dd id="mcSw">0</dd>
         <dt>\(U/N\varepsilon\)</dt><dd id="mcE">–</dd>
         <dt>\(M/N\)</dt><dd id="mcM">–</dd>
-        <dt>Onsager \(|M|/N\) at this \(T\)</dt><dd id="mcOn">–</dd>
+        <dt data-k="k66">Onsager \(|M|/N\) at this \(T\)</dt><dd id="mcOn">–</dd>
       </dl>
     </div>
   </div>
-  <p class="prose note" style="margin-top:1.25rem">A sweep is \(N\) attempted flips. Try a random start at \(T = 1\): instead of reaching the fully magnetized state, the lattice often gets stuck in a metastable state with two large domains, since a state is probable but the path to it can take a very long time, as in a real magnet. Lower temperatures give larger clusters; near \(T_c\) there are clusters of all sizes, up to the size of the lattice.</p>
+  <p class="prose note" style="margin-top:1.25rem" data-k="k67">A sweep is \(N\) attempted flips. Try a random start at \(T = 1\): instead of reaching the fully magnetized state, the lattice often gets stuck in a metastable state with two large domains, since a state is probable but the path to it can take a very long time, as in a real magnet. Lower temperatures give larger clusters; near \(T_c\) there are clusters of all sizes, up to the size of the lattice.</p>
 
-  <h3>Measuring the thermodynamics</h3>
+  <h3 data-k="k68">Measuring the thermodynamics</h3>
   <div class="prose">
-    <p>The lecture’s Python code scans the temperature, equilibrates, and then averages the energy, magnetization, heat capacity, and susceptibility. This does the same in your browser on a smaller lattice, using fluctuations: \(C = (\langle U^2\rangle - \langle U\rangle^2)/k_{\mathrm{B}}T^2\) and \(\chi_{\mathrm{abs}} \propto (\langle M^2\rangle - \langle |M|\rangle^2)/k_{\mathrm{B}}T\). The \(|M|\) version is used because a finite lattice at \(B = 0\) flips now and then between \(\pm M\): the standard \(\chi \propto \langle M^2\rangle - \langle M\rangle^2\) would count those flips below \(T_c\). It is not the standard response, though: above \(T_c\) it comes out smaller, because \(\langle |M|\rangle^2 \neq 0\) even for a symmetric distribution, so use it for the location of the peak rather than for amplitudes.</p>
+    <p data-k="k69">The lecture’s Python code scans the temperature, equilibrates, and then averages the energy, magnetization, heat capacity, and susceptibility. This does the same in your browser on a smaller lattice, using fluctuations: \(C = (\langle U^2\rangle - \langle U\rangle^2)/k_{\mathrm{B}}T^2\) and \(\chi_{\mathrm{abs}} \propto (\langle M^2\rangle - \langle |M|\rangle^2)/k_{\mathrm{B}}T\). The \(|M|\) version is used because a finite lattice at \(B = 0\) flips now and then between \(\pm M\): the standard \(\chi \propto \langle M^2\rangle - \langle M\rangle^2\) would count those flips below \(T_c\). It is not the standard response, though: above \(T_c\) it comes out smaller, because \(\langle |M|\rangle^2 \neq 0\) even for a symmetric distribution, so use it for the location of the peak rather than for amplitudes.</p>
   </div>
   <div class="ctl btns" style="margin-top:1rem">
-    <button type="button" id="scanBtn">Run a temperature scan</button>
+    <button type="button" id="scanBtn" data-k="k70">Run a temperature scan</button>
     <span class="cap" id="scanStatus" style="margin:0;align-self:center"></span>
   </div>
   <div class="two">
@@ -389,16 +407,16 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <div class="canvas-holder"><canvas id="sc2" aria-label="Heat capacity per dipole versus temperature"></canvas></div>
     <div class="canvas-holder"><canvas id="sc3" aria-label="Susceptibility χ_abs per dipole versus temperature"></canvas></div>
   </div>
-  <p class="cap">A 24 × 24 lattice, 33 temperatures, 600 sweeps to equilibrate and 1500 to measure at each. Green: Onsager’s exact magnetization. The peaks sharpen with larger lattices, toward the true divergences at \(T_c\).</p>
+  <p class="cap" data-k="k71">A 24 × 24 lattice, 33 temperatures, 600 sweeps to equilibrate and 1500 to measure at each. Green: Onsager’s exact magnetization. The peaks sharpen with larger lattices, toward the true divergences at \(T_c\).</p>
 </section>
 
 <!-- ============ CLUSTERS ============ -->
 <section id="clusters" aria-labelledby="h-clusters">
-  <h2 id="h-clusters">Correlations and scale invariance</h2>
+  <h2 id="h-clusters" data-k="k72">Correlations and scale invariance</h2>
   <div class="prose">
-    <p>Problem 8.29 quantifies clustering with the correlation function: for dipoles a distance \(r\) apart,</p>
+    <p data-k="k73">Problem 8.29 quantifies clustering with the correlation function: for dipoles a distance \(r\) apart,</p>
     <div class="eq">\[ c(r) = \overline{s_i s_j} - \bar{s}^2 \propto e^{-r/\xi} \]</div>
-    <p>where \(\xi\) is the correlation length. At \(T = T_c\), \(\xi \to \infty\): there is no characteristic scale, and near \(T_c\) it follows a power law, \(\xi \sim |T - T_c|^{-\nu}\). This is computed from the live simulation above, averaged over all pairs along rows and columns.</p>
+    <p data-k="k74">where \(\xi\) is the correlation length. At \(T = T_c\), \(\xi \to \infty\): there is no characteristic scale, and near \(T_c\) it follows a power law, \(\xi \sim |T - T_c|^{-\nu}\). This is computed from the live simulation above, averaged over all pairs along rows and columns.</p>
   </div>
   <div class="fig">
     <div>
@@ -406,16 +424,16 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <dl class="stats">
-        <dt>Temperature</dt><dd id="crT">–</dd>
-        <dt>Correlation length \(\xi\)</dt><dd id="crXi">–</dd>
+        <dt data-k="k75">Temperature</dt><dd id="crT">–</dd>
+        <dt data-k="k76">Correlation length \(\xi\)</dt><dd id="crXi">–</dd>
       </dl>
-      <p class="cap" style="margin:.75rem 0 0">\(\xi\) is where \(c(r)\) falls to \(1/e\) of \(c(0)\). It is a snapshot of the current state, so it fluctuates; near \(T_c\) it is limited only by the size of the lattice.</p>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k77">\(\xi\) is where \(c(r)\) falls to \(1/e\) of \(c(0)\). It is a snapshot of the current state, so it fluctuates; near \(T_c\) it is limited only by the size of the lattice.</p>
     </div>
   </div>
 
-  <h3>Block spins and the renormalization group</h3>
+  <h3 data-k="k78">Block spins and the renormalization group</h3>
   <div class="prose">
-    <p>Problem 8.32. Divide the lattice into 3 × 3 blocks and replace each by a single dipole that follows the majority rule. The new lattice is a third as wide, and it looks like an Ising lattice at a different temperature. Away from \(T_c\), repeating the transformation drives the system toward one of the trivial fixed points, zero or infinite temperature. At \(T_c\), the system is invariant under the transformation, because of its scale-free nature: the critical point is itself a fixed point. Averaging away the small-scale details leaves the critical behavior unchanged, which is why very different systems, such as magnets and fluids near their critical points, share the same critical exponents. This is one version of the renormalization group, for which Kenneth Wilson received the 1982 Nobel Prize in Physics.</p>
+    <p data-k="k79">Problem 8.32. Divide the lattice into 3 × 3 blocks and replace each by a single dipole that follows the majority rule. The new lattice is a third as wide, and it looks like an Ising lattice at a different temperature. Away from \(T_c\), repeating the transformation drives the system toward one of the trivial fixed points, zero or infinite temperature. At \(T_c\), the system is invariant under the transformation, because of its scale-free nature: the critical point is itself a fixed point. Averaging away the small-scale details leaves the critical behavior unchanged, which is why very different systems, such as magnets and fluids near their critical points, share the same critical exponents. This is one version of the renormalization group, for which Kenneth Wilson received the 1982 Nobel Prize in Physics.</p>
   </div>
   <div class="two">
     <div>
@@ -427,57 +445,57 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
       <p class="cap" id="bs2c">After two.</p>
     </div>
   </div>
-  <p class="prose note" style="margin-top:1.25rem">Set the simulation above to 270 × 270 and compare: well below \(T_c\) the blocks become more uniform (lower effective temperature), well above \(T_c\) they become more random (higher), and near \(T_c\) they look statistically the same as the original.</p>
+  <p class="prose note" style="margin-top:1.25rem" data-k="k80">Set the simulation above to 270 × 270 and compare: well below \(T_c\) the blocks become more uniform (lower effective temperature), well above \(T_c\) they become more random (higher), and near \(T_c\) they look statistically the same as the original.</p>
 </section>
 
 <section id="deeper" aria-labelledby="h-deeper">
-  <h2 id="h-deeper">Going deeper</h2>
+  <h2 id="h-deeper" data-k="k81">Going deeper</h2>
   <div class="prose">
-    <p>This page is the introduction to the Ising model in the undergraduate course <a href="https://lshlj82.github.io/statphys2-GNU/">Statistical Physics 2</a>. Two graduate courses in the Department of Physics, Gyeongsang National University, take the same model much further, and each page below picks up where a section of this one leaves off.</p>
+    <p data-k="k82">This page is the introduction to the Ising model in the undergraduate course <a href="https://lshlj82.github.io/statphys2-GNU/">Statistical Physics 2</a>. Two graduate courses in the Department of Physics, Gyeongsang National University, take the same model much further, and each page below picks up where a section of this one leaves off.</p>
   </div>
-  <h3><a href="https://lshlj82.github.io/special-topics-in-complex-systems-GNU/">Special Topics in Complex Systems</a></h3>
-  <p class="prose note">Following K. Christensen and N. R. Moloney, <i>Complexity and Criticality</i> (Imperial College Press, 2005).</p>
+  <h3 data-k="k83"><a href="https://lshlj82.github.io/special-topics-in-complex-systems-GNU/">Special Topics in Complex Systems</a></h3>
+  <p class="prose note" data-k="k84">Following K. Christensen and N. R. Moloney, <i>Complexity and Criticality</i> (Imperial College Press, 2005).</p>
   <ul class="deeper">
-    <li>
+    <li data-k="k85">
       <a class="t" href="https://lshlj82.github.io/Ising-model-preliminary/">The Ising model: introduction</a>
       <span class="d">The model, its Hamiltonian and partition function, and why interacting binary spins are the standard testing ground for phase transitions.</span>
       <span class="meta">Builds on: <a href="#model">The model</a> · <a href="https://github.com/lshlj82/Ising-model-preliminary">source</a></span>
     </li>
-    <li>
+    <li data-k="k86">
       <a class="t" href="https://lshlj82.github.io/Ising-model-1D/">The 1D Ising model</a>
       <span class="d">The transfer-matrix solution in one dimension, and why there is no ordered phase at any nonzero temperature.</span>
       <span class="meta">Builds on: <a href="#oned">The exact solution in one dimension</a> · <a href="https://github.com/lshlj82/Ising-model-1D">source</a></span>
     </li>
-    <li>
+    <li data-k="k87">
       <a class="t" href="https://lshlj82.github.io/Ising-model-MF-Landau/">Mean-field and Landau theory of the Ising model</a>
       <span class="d">The self-consistent mean-field equation, the Landau free energy expanded in the order parameter, and the mean-field exponents.</span>
       <span class="meta">Builds on: <a href="#mfa">The mean-field approximation</a> · <a href="https://github.com/lshlj82/Ising-model-MF-Landau">source</a></span>
     </li>
-    <li>
+    <li data-k="k88">
       <a class="t" href="https://lshlj82.github.io/Ising-model-2D/">The 2D Ising model</a>
       <span class="d">Monte Carlo simulations on the square lattice, Onsager's exact critical temperature, and finite-size behavior near the transition.</span>
       <span class="meta">Builds on: <a href="#mc">Monte Carlo simulation</a> · <a href="https://github.com/lshlj82/Ising-model-2D">source</a></span>
     </li>
-    <li>
+    <li data-k="k89">
       <a class="t" href="https://lshlj82.github.io/Ising-model-RG/">The renormalization group for the Ising model</a>
       <span class="d">Block spins, the flow of couplings under repeated coarse-graining, fixed points, and critical exponents from the linearized flow.</span>
       <span class="meta">Builds on: <a href="#clusters">Correlations and scale invariance</a> · <a href="https://github.com/lshlj82/Ising-model-RG">source</a></span>
     </li>
   </ul>
-  <h3><a href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/">Phase Transitions and Critical Phenomena</a></h3>
-  <p class="prose note">Following N. Goldenfeld, <i>Lectures on Phase Transitions and the Renormalization Group</i> (Addison-Wesley, 1992).</p>
+  <h3 data-k="k90"><a href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/">Phase Transitions and Critical Phenomena</a></h3>
+  <p class="prose note" data-k="k91">Following N. Goldenfeld, <i>Lectures on Phase Transitions and the Renormalization Group</i> (Addison-Wesley, 1992).</p>
   <ul class="deeper">
-    <li>
+    <li data-k="k92">
       <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02a-phase-transitions-in-principle.html">Chapter 2, Part 1: how phase transitions occur in principle</a>
       <span class="d">The thermodynamic limit, exact enumeration of all \(2^{16}\) states of a 4 × 4 lattice, convexity of the free energy, symmetry, and domain walls in one dimension.</span>
       <span class="meta">Builds on: <a href="#model">The model</a> · <a href="#oned">The exact solution in one dimension</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02a-phase-transitions-in-principle.html">source</a></span>
     </li>
-    <li>
+    <li data-k="k93">
       <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02b-symmetry-breaking-and-lattice-gases.html">Chapter 2, Part 2: symmetry breaking, ergodicity, and lattice gases</a>
       <span class="d">The Peierls argument for order in two dimensions, spontaneous symmetry breaking, ergodicity breaking, and why a lattice gas is an Ising magnet.</span>
       <span class="meta">Builds on: <a href="#mfa">The mean-field approximation</a> · <a href="#mc">Monte Carlo simulation</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02b-symmetry-breaking-and-lattice-gases.html">source</a></span>
     </li>
-    <li>
+    <li data-k="k94">
       <a class="t" href="https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch03-phase-transitions-in-practice.html">Chapter 3: how phase transitions occur in practice</a>
       <span class="d">The exact one-dimensional solution by transfer matrix, spatial correlations, the low-temperature expansion, Weiss mean-field theory with its exponents, and the Ising model on networks.</span>
       <span class="meta">Builds on: <a href="#oned">The exact solution in one dimension</a> · <a href="#mfa">The mean-field approximation</a> · <a href="#clusters">Correlations and scale invariance</a> · <a href="https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch03-phase-transitions-in-practice.html">source</a></span>
@@ -488,8 +506,8 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 
 <footer>
   <div class="wrap">
-    <p>Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on systems of interacting particles (Section 8.2, The Ising Model of a Ferromagnet, with Problems 8.15, 8.17, 8.18, 8.22, 8.24, 8.29 and 8.32).</p>
-    <p>Temperatures are in units of \(\varepsilon/k_{\mathrm{B}}\). The Monte Carlo engine is a straightforward Metropolis implementation with periodic boundaries. Equations typeset with MathJax.</p>
+    <p data-k="k95">Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on systems of interacting particles (Section 8.2, The Ising Model of a Ferromagnet, with Problems 8.15, 8.17, 8.18, 8.22, 8.24, 8.29 and 8.32).</p>
+    <p data-k="k96">Temperatures are in units of \(\varepsilon/k_{\mathrm{B}}\). The Monte Carlo engine is a straightforward Metropolis implementation with periodic boundaries. Equations typeset with MathJax.</p>
   </div>
 </footer>
 
@@ -504,8 +522,8 @@ function readColors(){
   ['bg','surface','ink','muted','rule','band','up','down','par','anti','mf','exact','mc','res'].forEach(k => C[k] = cs.getPropertyValue('--'+k).trim());
 }
 readColors();
-const SANS = '"Instrument Sans", system-ui, sans-serif';
-const SERIF = '"Newsreader", Georgia, serif';
+const SANS = '"Instrument Sans", "IBM Plex Sans KR", system-ui, sans-serif';
+const SERIF = '"Newsreader", "IBM Plex Sans KR", Georgia, serif';
 function fit(cv, LW, LH){
   const w = cv.parentElement.clientWidth || LW, hgt = w*LH/LW;
   cv.style.height = hgt + 'px';
@@ -611,9 +629,9 @@ function twoRender(){
   const b = 1/twoT, pp = 1/(1+Math.exp(-2*b)), pa = 1 - pp;
   $('twoTOut').textContent = twoT.toFixed(2);
   $('tw1').textContent = (pp/2).toFixed(3); $('tw2').textContent = pa.toFixed(3); $('tw3').textContent = signed(-Math.tanh(b),3);
-  $('twV').textContent = twoT < T_TWO ? 'Below 2.885: both up is more likely than one up and one down.' : 'Above 2.885: one up and one down is more likely than both up.';
+  $('twV').textContent = twoT < T_TWO ? tr('Below 2.885: both up is more likely than one up and one down.','2.885 아래: 둘 다 위일 확률이 하나는 위, 하나는 아래일 확률보다 큽니다.') : tr('Above 2.885: one up and one down is more likely than both up.','2.885 위: 하나는 위, 하나는 아래일 확률이 둘 다 위일 확률보다 큽니다.');
   const c = twoCtx; if (!c) return;
-  const W=640,H=340, ax = axes(c, W, H, [46,22,46,44], [0,10], [0,1.05], [0,2,4,6,8,10], [0,0.25,0.5,0.75,1], kTlab, [['probability','s']]);
+  const W=640,H=340, ax = axes(c, W, H, [46,22,46,44], [0,10], [0,1.05], [0,2,4,6,8,10], [0,0.25,0.5,0.75,1], kTlab, [[tr('probability','확률'),'s']]);
   // right axis for U from -1 to 0
   const Yu = u => ax.Y(1+u);  // map -1..0 onto 0..1
   c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; [-1,-0.5,0].forEach(u => c.fillText(signed(u, u===0||u===-1?0:1), W-40, Yu(u)+4));
@@ -654,7 +672,7 @@ function chainDraw(){
   const off = chainDraw.off; off.width = CN; off.height = CHH; off.getContext('2d').putImageData(img,0,0);
   c.imageSmoothingEnabled = false; c.drawImage(off, 20, 14, W-40, H-46);
   c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left';
-  c.fillText('Each row is the whole chain after one sweep; newest at the bottom. Time runs down.', 20, H-12);
+  c.fillText(tr('Each row is the whole chain after one sweep; newest at the bottom. Time runs down.','각 행은 한 스윕 뒤의 사슬 전체이며, 가장 최근 것이 맨 아래입니다. 시간은 아래로 흐릅니다.'), 20, H-12);
 }
 function chainInfo(){
   const b = 1/chT;
@@ -662,8 +680,8 @@ function chainInfo(){
   $('chUe').textContent = signed(-Math.tanh(b), 3);
   $('chUm').textContent = chEn ? signed(chE/chEn, 3) : '–';
   const xi = -1/Math.log(Math.tanh(b));
-  $('chXi').textContent = xi >= 1000 ? Math.round(xi).toLocaleString('en-US') + ' spacings' : xi.toFixed(1) + ' spacings';
-  $('chPlay').textContent = chRun ? 'Pause' : 'Play';
+  $('chXi').textContent = (xi >= 1000 ? Math.round(xi).toLocaleString('en-US') : xi.toFixed(1)) + tr(' spacings',' 간격');
+  $('chPlay').textContent = chRun ? tr('Pause','일시 정지') : tr('Play','재생');
 }
 $('chT').addEventListener('input', e => { chT = +e.target.value; chE = 0; chEn = 0; chainInfo(); });
 $('chPlay').addEventListener('click', () => { chRun = !chRun; chainInfo(); });
@@ -684,7 +702,7 @@ const hStar = t => t >= 1 ? 0 : Math.sqrt(1-t) - t*Math.atanh(Math.sqrt(1-t));
 function mfRender(){
   const {t, h} = MF, sols = mfSolutions(t, h);
   $('mfTOut').textContent = t.toFixed(2); $('mfBOut').textContent = signed(h, 2);
-  $('mfSol').innerHTML = sols.map((o,i) => '<dt>' + (o.marginal ? 'Marginally stable (critical)' : o.stable ? 'Stable' : 'Unstable') + ' solution</dt><dd>' + '<i>s̄</i> = ' + signed(o.s, 3) + '</dd>').join('') + '<dt class="sep"></dt><dt>' + (sols.length === 1 ? 'One solution' : 'Three solutions') + '</dt><dd></dd>';
+  $('mfSol').innerHTML = sols.map((o,i) => '<dt>' + (o.marginal ? tr('Marginally stable (critical) solution','경계적으로 안정한 (임계) 해') : o.stable ? tr('Stable solution','안정한 해') : tr('Unstable solution','불안정한 해')) + '</dt><dd>' + '<i>s̄</i> = ' + signed(o.s, 3) + '</dd>').join('') + '<dt class="sep"></dt><dt>' + (sols.length === 1 ? tr('One solution','해 하나') : tr('Three solutions','해 세 개')) + '</dt><dd></dd>';
   // graphical solution
   let c = gsCtx; if (c){
     const W=340,H=330, ax = axes(c, W, H, [36,16,12,38], [-1.5,1.5], [-1.5,1.5], [-1,0,1], [-1,0,1], [['s̄','i']], null);
@@ -704,7 +722,7 @@ function mfRender(){
     c.closePath(); c.fill(); c.globalAlpha=1;
     c.strokeStyle=C.mf; c.lineWidth=2; c.beginPath(); for (let i=1;i<=200;i++){ const tt=i/200; i>1?c.lineTo(ax.X(tt),ax.Y(hStar(tt))):c.moveTo(ax.X(tt),ax.Y(hStar(tt))); } c.stroke();
     c.beginPath(); for (let i=1;i<=200;i++){ const tt=i/200; i>1?c.lineTo(ax.X(tt),ax.Y(-hStar(tt))):c.moveTo(ax.X(tt),ax.Y(-hStar(tt))); } c.stroke();
-    c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText('3 solutions', ax.X(0.08), ax.Y(0.08)); c.fillText('1 solution', ax.X(1.15), ax.Y(0.6)); c.fillText('1 solution', ax.X(1.15), ax.Y(-0.6));
+    c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText(tr('3 solutions','해 3개'), ax.X(0.08), ax.Y(0.08)); c.fillText(tr('1 solution','해 1개'), ax.X(1.15), ax.Y(0.6)); c.fillText(tr('1 solution','해 1개'), ax.X(1.15), ax.Y(-0.6));
     c.fillStyle=C.ink; c.beginPath(); c.arc(ax.X(t), ax.Y(h), 6, 0, 7); c.fill();
   }
 }
@@ -722,7 +740,7 @@ function mtRender(){
       c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center'; c.fillText('4', ax.X(4), ax.Y(0.08)); c.fillText('2.27', ax.X(TC_ONS), ax.Y(0.08));
     } else {
       // log-log: M vs (1 - T/Tc)
-      const lx = v => Math.log10(v), ax = axes(c, W, H, [44,16,14,40], [-4,0], [-2.2,0.2], [-4,-3,-2,-1,0], [-2,-1,0], [['1 − ','r'],['T','i'],['/','r'],['T','i'],['c','isub'],['  (log)','s']], [['|','r'],['s̄','i'],['|  (log)','r']], v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]), v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]));
+      const lx = v => Math.log10(v), ax = axes(c, W, H, [44,16,14,40], [-4,0], [-2.2,0.2], [-4,-3,-2,-1,0], [-2,-1,0], [['1 − ','r'],['T','i'],['/','r'],['T','i'],['c','isub'],[tr('  (log)','  (로그)'),'s']], [['|','r'],['s̄','i'],['|  (log)','r']], v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]), v => v===0 ? '1' : '10' + String(v).replace('-','⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]));
       [[x => mfM(4*(1-x),4), C.mf, 'slope 1/2'],[x => onsagerM(TC_ONS*(1-x)), C.exact, 'slope 1/8']].forEach(([f,col,lab]) => { c.strokeStyle=col; c.lineWidth=2.6; c.beginPath(); for (let i=0;i<=300;i++){ const lv=-4+4*i/300, x=Math.pow(10,lv); const y=ax.Y(lx(Math.max(f(x),1e-6))); i?c.lineTo(ax.X(lv),y):c.moveTo(ax.X(lv),y); } c.stroke(); c.fillStyle=col; c.font='12px '+SANS; c.textAlign='left'; c.fillText(lab, ax.X(-3.6), ax.Y(lx(Math.max(f(Math.pow(10,-3.6)),1e-6)))-8); });
     }
   }
@@ -775,7 +793,7 @@ function mcDraw(){
 function trDraw(){
   const c = trCtx; if (!c) return;
   const W=640,H=180, ax = axes(c, W, H, [40,12,14,26], [0,300], [-2.2,1.05], [], [-2,-1,0,1], null, null);
-  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText('last 300 frames', 44, H-8);
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText(tr('last 300 frames','최근 300 프레임'), 44, H-8);
   const hs = MC.hist, n = hs.length;
   [['M',C.mc],['E',C.mf]].forEach(([k,col]) => { c.strokeStyle=col; c.lineWidth=2; c.beginPath(); hs.forEach((o,i) => { const x=ax.X(300-n+i), y=ax.Y(o[k]); i?c.lineTo(x,y):c.moveTo(x,y); }); c.stroke(); });
 }
@@ -784,12 +802,12 @@ function mcInfo(){
   $('mcTOut').innerHTML = atTc ? MC.T.toFixed(3) + ' = <i>T</i><sub>c</sub>' : MC.T.toFixed(2); $('mcBOut').textContent = signed(MC.h, 2);
   $('mcTc').setAttribute('aria-pressed', String(atTc));
   $('mcSOut').textContent = ['0.25','0.5','1','2','4'][MC.sweeps];
-  $('mcPlay').textContent = MC.run ? 'Pause' : 'Play';
+  $('mcPlay').textContent = MC.run ? tr('Pause','일시 정지') : tr('Play','재생');
   $('mcSw').textContent = Math.floor(MC.nsw).toLocaleString('en-US');
   const last = MC.hist[MC.hist.length-1];
   $('mcE').textContent = last ? signed(last.E, 3) : '–'; $('mcM').textContent = last ? signed(last.M, 3) : '–';
-  $('mcOn').textContent = MC.h === 0 ? onsagerM(MC.T).toFixed(3) : 'only for B = 0';
-  $('mcInfo').textContent = MC.L + ' × ' + MC.L + ' = ' + (MC.L*MC.L).toLocaleString('en-US') + ' dipoles';
+  $('mcOn').textContent = MC.h === 0 ? onsagerM(MC.T).toFixed(3) : tr('only for B = 0','B = 0에서만');
+  $('mcInfo').textContent = MC.L + ' × ' + MC.L + ' = ' + (MC.L*MC.L).toLocaleString('en-US') + tr(' dipoles',' 쌍극자');
 }
 const SWEEP_FR = [0.25, 0.5, 1, 2, 4];
 function mcStep(){
@@ -822,8 +840,8 @@ function scanRun(){
     for (let i=0;i<n;i++){ mcSweep(s, L, T, 0); const {E, M} = mcMeasure(s, L, 0); const Et = E*N, Ma = Math.abs(M)*N; e1 += Et; e2 += Et*Et; m1 += Ma; m2 += Ma*Ma; }
     e1/=n; e2/=n; m1/=n; m2/=n;
     SCAN.T.push(T); SCAN.E.push(e1/N); SCAN.M.push(m1/N); SCAN.Cv.push((e2 - e1*e1)/(T*T)/N); SCAN.X.push((m2 - m1*m1)/T/N);
-    k++; $('scanStatus').textContent = 'Simulating ' + k + ' of ' + Ts.length + ' temperatures…'; scanDraw();
-    if (k < Ts.length) setTimeout(one, 0); else { $('scanBtn').disabled = false; $('scanStatus').textContent = 'Done. Run again for a fresh set of samples.'; }
+    k++; $('scanStatus').textContent = tr('Simulating ' + k + ' of ' + Ts.length + ' temperatures…','온도 ' + Ts.length + '개 중 ' + k + '번째 시뮬레이션 중…'); scanDraw();
+    if (k < Ts.length) setTimeout(one, 0); else { $('scanBtn').disabled = false; $('scanStatus').textContent = tr('Done. Run again for a fresh set of samples.','완료. 새 표본을 얻으려면 다시 실행하세요.'); }
   };
   setTimeout(one, 20);
 }
@@ -832,7 +850,7 @@ function scanDraw(){
     {ctx:scCtx[0], key:'E', yr:[-2.1,0], yt:[-2,-1,0], lab:[['U','i'],[' / ','r'],['Nε','i']]},
     {ctx:scCtx[1], key:'M', yr:[0,1.05], yt:[0,0.5,1], lab:[['|','r'],['M','i'],['| / ','r'],['N','i']]},
     {ctx:scCtx[2], key:'Cv', yr:[0,2.2], yt:[0,1,2], lab:[['C','i'],[' / ','r'],['Nk','i'],['B','sub']]},
-    {ctx:scCtx[3], key:'X', yr:[0,null], yt:null, lab:[['χ','i'],['abs','sub'],[' per dipole (arb.)','s']]}
+    {ctx:scCtx[3], key:'X', yr:[0,null], yt:null, lab:[['χ','i'],['abs','sub'],[tr(' per dipole (arb.)',' 쌍극자당 (임의 단위)'),'s']]}
   ];
   defs.forEach(d => {
     const c = d.ctx; if (!c) return;
@@ -842,7 +860,7 @@ function scanDraw(){
     c.strokeStyle=C.muted; c.setLineDash([3,4]); c.lineWidth=1; c.beginPath(); c.moveTo(ax.X(TC_ONS),16); c.lineTo(ax.X(TC_ONS),H-40); c.stroke(); c.setLineDash([]);
     if (d.key === 'M'){ c.strokeStyle=C.exact; c.lineWidth=2; c.beginPath(); for (let i=0;i<=300;i++){ const T=1+3*i/300; const y=ax.Y(onsagerM(T)); i?c.lineTo(ax.X(T),y):c.moveTo(ax.X(T),y); } c.stroke(); }
     c.fillStyle=C.mc; SCAN.T.forEach((T,i) => { c.beginPath(); c.arc(ax.X(T), ax.Y(Math.min(SCAN[d.key][i], yr[1])), 4, 0, 7); c.fill(); });
-    if (!SCAN.T.length){ c.fillStyle=C.muted; c.font='13px '+SANS; c.textAlign='center'; c.fillText('Press “Run a temperature scan”', W/2, H/2); }
+    if (!SCAN.T.length){ c.fillStyle=C.muted; c.font='13px '+SANS; c.textAlign='center'; c.fillText(tr('Press “Run a temperature scan”','“온도 훑기 실행”을 누르세요'), W/2, H/2); }
   });
 }
 $('scanBtn').addEventListener('click', scanRun);
@@ -859,10 +877,10 @@ function corrDraw(){
   const cr = corrCompute(), R = cr.length - 1, c0 = cr[0];
   let xi = null; for (let r=1;r<=R;r++){ if (cr[r] < c0/Math.E){ const a = cr[r-1], b = cr[r]; xi = r-1 + (a - c0/Math.E)/(a - b); break; } }
   $('crT').innerHTML = (Math.abs(MC.T - TC_ONS) < 1e-9 ? MC.T.toFixed(3) : MC.T.toFixed(2)) + ' <i>ε</i>/<i>k</i><sub>B</sub>';
-  $('crXi').textContent = c0 < 1e-3 ? 'no fluctuations' : xi === null ? '> ' + R + ' spacings' : xi.toFixed(1) + ' spacings';
+  $('crXi').textContent = c0 < 1e-3 ? tr('no fluctuations','요동 없음') : (xi === null ? '> ' + R : xi.toFixed(1)) + tr(' spacings',' 간격');
   const c = crCtx; if (!c) return;
   const W=640,H=280, rmax = Math.min(R, 60), ymax = Math.max(0.05, c0)*1.1;
-  const ax = axes(c, W, H, [46,16,14,40], [0, rmax+1], [Math.min(0, ...Array.from(cr).slice(0,rmax+1))*1.1, ymax], [0,10,20,30,40,50,60].filter(v=>v<=rmax+1), (() => { const top = ymax/1.1, st = top > 0.5 ? 0.25 : top > 0.2 ? 0.1 : top > 0.1 ? 0.05 : 0.02; const t = []; for (let v=0; v<=top+1e-9; v+=st) t.push(+v.toFixed(2)); return t; })(), [['distance ','s'],['r','i']], [['c','i'],['(','r'],['r','i'],[')','r']]);
+  const ax = axes(c, W, H, [46,16,14,40], [0, rmax+1], [Math.min(0, ...Array.from(cr).slice(0,rmax+1))*1.1, ymax], [0,10,20,30,40,50,60].filter(v=>v<=rmax+1), (() => { const top = ymax/1.1, st = top > 0.5 ? 0.25 : top > 0.2 ? 0.1 : top > 0.1 ? 0.05 : 0.02; const t = []; for (let v=0; v<=top+1e-9; v+=st) t.push(+v.toFixed(2)); return t; })(), [[tr('distance ','거리 '),'s'],['r','i']], [['c','i'],['(','r'],['r','i'],[')','r']]);
   const bw = (W-46-14)/(rmax+1)*0.7;
   c.fillStyle=C.mc; for (let r=0;r<=rmax;r++){ const y0 = ax.Y(0), y = ax.Y(cr[r]); c.fillRect(ax.X(r)-bw/2, Math.min(y,y0), bw, Math.abs(y0-y)); }
   if (xi !== null && xi <= rmax){ c.strokeStyle=C.mf; c.setLineDash([4,4]); c.lineWidth=1.5; c.beginPath(); c.moveTo(ax.X(xi),16); c.lineTo(ax.X(xi),H-40); c.stroke(); c.setLineDash([]); c.fillStyle=C.mf; rich(c, ax.X(xi)+6, 34, 15, [['ξ','i']], 'left'); }
@@ -879,9 +897,9 @@ function bsDraw(){
   if (!MC.s) return;
   const L = MC.L, b1 = blockSpin(MC.s, L), L1 = L/3;
   if (bs1Ctx) drawLattice(bs1Ctx, b1, L1, 400, 400);
-  $('bs1c').textContent = 'After one block-spin transformation: ' + L1 + ' × ' + L1 + '.';
-  if (L1 % 3 === 0 && L1 >= 3){ const b2 = blockSpin(b1, L1), L2 = L1/3; if (bs2Ctx) drawLattice(bs2Ctx, b2, L2, 400, 400); $('bs2c').textContent = 'After two: ' + L2 + ' × ' + L2 + '.'; }
-  else { if (bs2Ctx){ bs2Ctx.clearRect(0,0,400,400); bs2Ctx.fillStyle=C.surface; bs2Ctx.fillRect(0,0,400,400); bs2Ctx.fillStyle=C.muted; bs2Ctx.font='14px '+SANS; bs2Ctx.textAlign='center'; bs2Ctx.fillText('Choose 90 × 90 or larger for a second step', 200, 200); } $('bs2c').textContent = 'After two.'; }
+  $('bs1c').textContent = tr('After one block-spin transformation: ','블록 스핀 변환 한 번 뒤: ') + L1 + ' × ' + L1 + '.';
+  if (L1 % 3 === 0 && L1 >= 3){ const b2 = blockSpin(b1, L1), L2 = L1/3; if (bs2Ctx) drawLattice(bs2Ctx, b2, L2, 400, 400); $('bs2c').textContent = tr('After two: ','두 번 뒤: ') + L2 + ' × ' + L2 + '.'; }
+  else { if (bs2Ctx){ bs2Ctx.clearRect(0,0,400,400); bs2Ctx.fillStyle=C.surface; bs2Ctx.fillRect(0,0,400,400); bs2Ctx.fillStyle=C.muted; bs2Ctx.font='14px '+SANS; bs2Ctx.textAlign='center'; bs2Ctx.fillText(tr('Choose 90 × 90 or larger for a second step','두 번째 단계를 보려면 90 × 90 이상을 고르세요'), 200, 200); } $('bs2c').textContent = tr('After two.','두 번 뒤.'); }
 }
 
 /* ================= LAYOUT + LOOP ================= */
@@ -901,6 +919,7 @@ function layout(){
 function redrawAll(){ latRender(); twoRender(); chainInfo(); chainDraw(); mfRender(); mtRender(); mcDraw(); trDraw(); mcInfo(); scanDraw(); corrDraw(); bsDraw(); }
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
+window.addEventListener('langchange', () => { if (latCtx) redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 // crCanvas and bs1 both drive the 'cr' work: remember each element's visibility and OR them per key,
 // so an "offscreen" notice for one cannot stop the other while it is still on screen.
@@ -932,13 +951,144 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll)
   const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
   const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
   const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
-  const sync = () => { const dark = current() === "dark", label = dark ? "Switch to light mode" : "Switch to dark mode";
+  const sync = () => { const dark = current() === "dark", label = dark ? tr("Switch to light mode","밝은 화면으로 전환") : tr("Switch to dark mode","어두운 화면으로 전환");
     btn.innerHTML = dark ? SUN : MOON; btn.setAttribute("aria-label", label); btn.title = label; };
   btn.addEventListener("click", () => { const next = current() === "dark" ? "light" : "dark"; root.dataset.theme = next;
     try { localStorage.setItem("netsci-theme", next); } catch (e) {} sync(); });
   mq.addEventListener("change", sync);
+  window.addEventListener("langchange", sync);
   sync();
 })();
 </script>
+<!-- lang-toggle:body -->
+<script>
+window.I18N_KO={
+"__title": "이징(Ising) 모형",
+"k1": "이상훈 교수의 강의 노트(8장 8.2절, 강자성체의 이징 모형)를 바탕으로 Claude Opus 5.5가 만든 대화형 데모",
+"k2": "이징(Ising) 모형",
+"k3": "각 원자 쌍극자에게 이웃과 같은 방향을 가리키기를 좋아한다는 규칙 하나만 주면, 그런 쌍극자의 격자는 임계 온도 아래에서 저절로 자화될 수 있습니다. 상호작용하는 입자의 가장 간단한 모형이면서, 상전이, 임계 지수, 재규격화 군으로 들어가는 관문이기도 합니다.",
+"k4": "강자성체",
+"k5": "이상적인 상자성체에서는 각 쌍극자가 외부 자기장에만 반응합니다. 실제 물질에서는 원자 쌍극자가 이웃의 영향을 받습니다: 에너지는 이웃한 쌍극자가 평행인지 반평행인지에 따라 달라집니다. 외부 자기장이 없어도 평행하게 정렬하기를 좋아하면 그 물질은 <strong>강자성체<\/strong>이고(철이 가장 익숙한 예), 반평행을 좋아하면 <strong>반강자성체<\/strong>입니다(Cr, NiO, FeO). 이 자발적인 장거리 질서는 0이 아닌 알짜 자화로 나타나는데, 상자성체는 이것을 가질 수 없습니다.",
+"k6": "온도를 올리면 무작위 요동이 생겨 자화가 줄어듭니다. 모든 강자성체에는 임계 온도, 즉 <strong>퀴리 온도<\/strong>(철은 약 1043 K)가 있어서, 그 위에서는 알짜 자화가 사라지고 물질이 상자성체가 됩니다. 그 아래에서도 쇳조각이 꼭 자화되어 있을 필요는 없습니다: 쇳조각은 자구들로 나뉘는데, 각 자구에는 정렬된 쌍극자가 수십억 개 있지만 자구마다 방향이 다릅니다. 가열하고, 자기장을 걸고, 다시 식히면 자구들이 정렬되어 영구 자석이 됩니다.",
+"k7": "이징(Ising) 모형은 자구 하나를 기술합니다. 이웃끼리 정렬하려는 경향만 남기고 선호하는 축을 하나 가정하므로, 각 쌍극자는 그 축에 평행하거나 반평행하게만 가리킵니다. 양자역학이 더 미묘하고 들뜸이 긴 파장의 마그논인 낮은 온도에서는 실제 강자성체의 정확한 모형이 아니지만, 퀴리 온도 근처에서는 훨씬 정확한 것으로 드러납니다.",
+"k8": "모형",
+"k9": "쌍극자 \\(i\\)가 위를 가리키면 \\(s_i = +1\\), 아래를 가리키면 \\(s_i = -1\\)이라 합시다. 이웃한 쌍극자 한 쌍은 평행이면 \\(-\\varepsilon\\), 반평행이면 \\(+\\varepsilon\\)를 기여하는데, 어느 경우든 \\(-\\varepsilon s_i s_j\\)입니다. 이웃한 쌍에 대해 더한 전체 에너지와, 모든 정렬 배치에 대해 더한 분배함수는 다음과 같습니다.",
+"k10": "쌍극자가 \\(N\\)개이면 그 합에는 \\(2^N\\)개의 항이 있으므로, 실제 시료에서는 모두 더하는 것이 불가능합니다. 하지만 4 × 4 격자라면 상태가 \\(2^{16} = 65{,}536\\)개뿐이어서 컴퓨터가 정확히 더할 수 있습니다. 쌍극자를 클릭해 뒤집어 보세요. 점은 평행 결합과 반평행 결합을 표시합니다(문제 8.15).",
+"k11": "<span><span class=\"swatch dot\" style=\"background:var(--par)\"><\/span>평행 결합, \\(-\\varepsilon\\)<\/span>\n        <span><span class=\"swatch dot\" style=\"background:var(--anti)\"><\/span>반평행 결합, \\(+\\varepsilon\\)<\/span>",
+"k12": "쌍극자를 클릭하면 뒤집힙니다. 키보드로는 화살표 키로 움직이고 Enter로 뒤집습니다.",
+"k13": "그림 8.4",
+"k14": "모두 위로",
+"k15": "바둑판",
+"k16": "무작위",
+"k17": "평행 결합",
+"k18": "반평행 결합",
+"k19": "에너지 \\(U\\)",
+"k20": "온도 \\(T\\)에서 65,536개의 모든 상태",
+"k21": "<span class=\"lt\"><span class=\"sr-only\">온도 kBT/ε (65,536개의 모든 상태)<\/span>\\(k_{\\mathrm{B}}T/\\varepsilon\\)<\/span>",
+"k22": "이 상태의 확률",
+"k23": "쌍극자 두 개",
+"k24": "문제 8.17. 쌍극자가 두 개뿐이면 상태 \\(\\uparrow\\uparrow\\)와 \\(\\downarrow\\downarrow\\)의 에너지는 \\(-\\varepsilon\\), \\(\\uparrow\\downarrow\\)와 \\(\\downarrow\\uparrow\\)의 에너지는 \\(+\\varepsilon\\)이므로",
+"k25": "\\(\\tfrac12 P_{\\text{parallel}} > P_{\\text{antiparallel}}\\)이면 두 쌍극자가 모두 위를 가리킬 확률이 하나는 위, 하나는 아래일 확률보다 큽니다. 이를 풀면 \\(e^{2\\beta\\varepsilon} > 2\\), 즉 \\(T < 2\\varepsilon/(k_{\\mathrm{B}}\\ln 2) \\approx 2.885\\,\\varepsilon/k_{\\mathrm{B}}\\)입니다.",
+"k26": "<span><span class=\"swatch line\" style=\"background:var(--par)\"><\/span>\\(P_{\\text{parallel}}\\)<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--anti)\"><\/span>\\(P_{\\text{antiparallel}}\\)<\/span>\n        <span><span class=\"swatch dash\" style=\"border-color:var(--ink)\"><\/span>\\(U/\\varepsilon\\) (오른쪽 축)<\/span>",
+"k27": "<span class=\"lt\"><span class=\"sr-only\">온도 kBT/ε (쌍극자 두 개)<\/span>\\(k_{\\mathrm{B}}T/\\varepsilon\\)<\/span>",
+"k28": "1차원의 정확한 풀이",
+"k29": "실제 강자성체는 3차원이고 정확히 풀리지 않지만, 1차원 사슬은 풀립니다. \\(U = -\\varepsilon(s_1s_2 + s_2s_3 + \\cdots + s_{N-1}s_N)\\)이면 마지막 합은 \\(s_{N-1}\\)이 무엇이든 \\(\\sum_{s_N = \\pm1} e^{\\beta\\varepsilon s_{N-1}s_N} = 2\\cosh\\beta\\varepsilon\\)이고, 사슬을 따라 내려가며 같은 일이 반복됩니다:",
+"k30": "이는 \\(\\mu B\\)를 \\(\\varepsilon\\)로 바꾼 2상태 상자성체의 결과와 똑같습니다. 다만 여기서는 쌍극자가 자기장이 아니라 서로와 정렬합니다. \\(T \\to 0\\)이면 \\(\\bar{U} \\to -N\\varepsilon\\)(완전 정렬), \\(T \\to \\infty\\)이면 \\(\\bar{U} \\to 0\\)입니다. 질서는 서서히 생기며, 0이 아닌 어떤 온도에서도 갑작스러운 상전이가 없습니다: 각 쌍극자에 이웃이 둘뿐이라 장거리 질서를 유지하기에는 너무 적습니다. 아래 사슬은 뒤에서 설명할 메트로폴리스 알고리즘으로 돌아갑니다. 식을수록 자구가 자라지만, 결코 전체를 차지하지는 못합니다.",
+"k31": "또한 모든 쌍극자를 뒤집어도 에너지가 변하지 않으므로, 평균 쌍극자 정렬은 언제나 \\(\\bar{s} = 0\\)입니다. 그렇다면 어떻게 이징 계가 \\(\\bar{s} \\neq 0\\)을 가질 수 있을까요? 답은 아래 평균장 절에서 대략 설명하는 <strong>자발 대칭 깨짐<\/strong>입니다. 그리고 위와 아래의 확률이 더 이상 그렇게 간단하지 않으므로, 상자성체의 \\(M = -U/B\\)도 그대로 성립하지 않습니다.",
+"k32": "<span class=\"lt\"><span class=\"sr-only\">온도 kBT/ε (1차원 사슬)<\/span>\\(k_{\\mathrm{B}}T/\\varepsilon\\)<\/span>",
+"k33": "\\(\\bar{U}/N\\varepsilon\\), 정확한 값",
+"k34": "\\(\\bar{U}/N\\varepsilon\\), 이 사슬",
+"k35": "전형적인 자구 크기, 정확한 값",
+"k36": "여기서 자구 크기는 상관 길이 \\(-1/\\ln\\tanh\\beta\\varepsilon\\)이며, 간격을 단위로 합니다. 모든 \\(T > 0\\)에서 유한합니다. 쌍극자 600개, 고리 모양으로 이음.",
+"k37": "평균장 근사",
+"k38": "아주 거친 근사로 어떤 차원에서든 이징 모형을 “풀” 수 있으며, 차원이 왜 중요한지도 알 수 있습니다. 가장 가까운 이웃이 \\(n\\)개인 쌍극자 하나에 주목합시다(1차원에서 2, 정사각 격자에서 4, 단순·체심·면심 입방에서 6, 8, 12). \\(\\bar{s}\\)가 이웃들의 평균 정렬이면 \\(E_\\uparrow = -\\varepsilon n\\bar{s}\\), \\(E_\\downarrow = +\\varepsilon n\\bar{s}\\)이므로",
+"k39": "여기까지는 정확합니다. 근사는 요동이 없다고, 즉 모든 이웃 환경이 전형적이어서 \\(\\bar{s}_i = \\bar{s}\\)라고 가정하는 것으로, 판데르발스 방정식에 쓴 것과 같은 아이디어입니다:",
+"k40": "그래프로 풀어 봅시다. \\(\\beta\\varepsilon n < 1\\)이면 원점에서 tanh의 기울기가 1보다 작고, 유일한 해는 안정한 \\(\\bar{s} = 0\\)입니다. 정확히 \\(\\beta\\varepsilon n = 1\\)이면 기울기가 1이지만, \\(\\bar{s}^4\\) 항 덕분에 \\(\\bar{s} = 0\\)은 여전히 자유 에너지의 (경계적) 최솟값입니다. \\(\\beta\\varepsilon n > 1\\)이면 \\(\\bar{s} = 0\\)이 불안정해지고, 양수일 수도 음수일 수도 있는 안정한 해 두 개가 나타납니다. 계는 하나를 골라야 합니다: 대칭이 자발적으로 깨집니다. 임계 온도는",
+"k41": "\\(\\varepsilon\\)와 \\(n\\)에 비례합니다: 이웃이 많을수록 무질서하게 만드는 데 더 많은 열에너지가 듭니다. 1차원에서는 \\(T_c = 2\\varepsilon/k_{\\mathrm{B}}\\)를 예측하는데, 이는 틀린 것으로 알려져 있지만, 근사는 차원이 높을수록 나아집니다(4차원 위에서는 정확해집니다). 문제 8.22는 자기장을 더해 각 쌍극자에 \\(\\mp\\mu_B B\\)를 주고 \\(\\bar{s} = \\tanh[\\beta(\\varepsilon n\\bar{s} + \\mu_B B)]\\)를 얻습니다.",
+"k42": "<span><span class=\"swatch dot\" style=\"background:var(--exact)\"><\/span>안정<\/span>\n            <span><span class=\"swatch dot\" style=\"background:var(--anti)\"><\/span>불안정<\/span>",
+"k43": "음영: 해 세 개 (안정한 해 둘). 그 밖: 하나.",
+"k44": "<span class=\"lt\"><span class=\"sr-only\">온도 kBT/nε (평균장)<\/span>\\(k_{\\mathrm{B}}T/n\\varepsilon\\)<\/span>",
+"k45": "<span class=\"lt\"><span class=\"sr-only\">자기장 μB·B/nε (평균장)<\/span>\\(\\mu_B B/n\\varepsilon\\)<\/span>",
+"k46": "자기장이 있으면 해가 세 개인 영역이 줄어듭니다: \\(|\\mu_B B| < n\\varepsilon\\)이어야 하며, 그 한계는 \\(T \\to 0\\)에서만 도달합니다.",
+"k47": "임계점 근처",
+"k48": "문제 8.24. \\(\\tanh x \\approx x - x^3/3\\)을 쓰면 \\(T_c\\) 바로 아래의 자화는 \\(\\bar{s} \\approx \\sqrt{3/T_c}\\,(T_c - T)^{1/2}\\)로, 임계 지수 \\(\\beta = 1/2\\)입니다. 감수율 \\(\\chi = (\\partial M/\\partial B)_T\\)는 \\(T_c\\) 위에서 \\(\\mu_B/k_{\\mathrm{B}}(T - T_c)\\)처럼, 아래에서 그 절반처럼 발산하므로 양쪽 모두 \\(\\gamma = 1\\)입니다. 정확한 임계 지수는 다릅니다: 2차원에서 \\(\\beta = 1/8\\), \\(\\gamma = 7/4\\)(온사거의 풀이), 3차원에서 \\(\\beta \\approx 1/3\\), \\(\\gamma \\approx 1.24\\)입니다. 아래는 정사각 격자(\\(n = 4\\), \\(T_c = 4\\varepsilon/k_{\\mathrm{B}}\\))의 평균장 자화를 온사거의 정확한 결과(\\(T_c \\approx 2.27\\,\\varepsilon/k_{\\mathrm{B}}\\))와 비교한 것입니다.",
+"k49": "<span><span class=\"swatch line\" style=\"background:var(--mf)\"><\/span>평균장<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--exact)\"><\/span>온사거 (정확한 값)<\/span>",
+"k50": "\\(T_c\\) 근처의 로그-로그<span class=\"sr-only\"> Tc<\/span>",
+"k51": "평균장 감수율, 단위 \\(\\mu_B/\\varepsilon\\), \\(T\\)의 단위는 \\(\\varepsilon/k_{\\mathrm{B}}\\): 위에서 \\(1/(T-T_c)\\), 아래에서 \\(1/2(T_c-T)\\).",
+"k52": "몬테카를로 시뮬레이션",
+"k53": "10 × 10 격자만 해도 상태가 \\(2^{100} \\approx 10^{30}\\)개라 모두 나열할 수 없습니다. 상태 백만 개를 무작위로 뽑는 것도 잘 통하지 않는데, 대부분이 무관한 상태일 것이기 때문입니다. 더 나은 아이디어는 볼츠만 인자 자체를 길잡이로 삼는 <strong>중요도 표집<\/strong>입니다. <strong>메트로폴리스 알고리즘<\/strong>(1953): 쌍극자 하나를 무작위로 골라 그것을 뒤집을 때의 에너지 변화 \\(\\Delta U\\)를 계산합니다. \\(\\Delta U \\le 0\\)이면 뒤집고, \\(\\Delta U > 0\\)이면 확률 \\(e^{-\\Delta U/k_{\\mathrm{B}}T}\\)로 뒤집습니다. 이를 반복합니다.",
+"k54": "한 번 뒤집기로 다른 두 상태 1과 2(\\(U_1 \\le U_2\\))에 대해 전이 확률은 \\(P(2\\to1) = 1/N\\), \\(P(1\\to2) = (1/N)\\,e^{-\\beta(U_2-U_1)}\\)이므로, 그 비는 정확히 볼츠만 인자의 비입니다. 이 세부 균형은 어떤 단계의 연속에도 이어지므로, 상태들은 볼츠만 통계가 요구하는 빈도로 나타납니다. 정사각 격자에서 \\(\\Delta U = 2\\varepsilon s_i(\\text{네 이웃의 합})\\)는 몇 가지 값만 가지므로, 필요한 지수 함수 값을 미리 계산해 둡니다. 가장자리는 서로 이어져 있습니다(주기 경계 조건).",
+"k55": "<span><span class=\"swatch\" style=\"background:var(--up)\"><\/span>위<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--down)\"><\/span>아래<\/span>\n        <span id=\"mcInfo\"><\/span>",
+"k56": "<span><span class=\"swatch line\" style=\"background:var(--mc)\"><\/span>쌍극자당 자화<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--mf)\"><\/span>쌍극자당 에너지, \\(U/N\\varepsilon\\)<\/span>",
+"k57": "<span class=\"lt\"><span class=\"sr-only\">온도 kBT/ε (몬테카를로)<\/span>\\(k_{\\mathrm{B}}T/\\varepsilon\\)<\/span>",
+"k58": "<small>온사거의 정확한 값 \\(T_c = 2/\\ln(1+\\sqrt{2}) \\approx 2.269\\).<\/small>",
+"k59": "\\(T_c\\)로 이동",
+"k60": "<span class=\"lt\">자기장 \\(\\mu_B B/\\varepsilon\\)<span class=\"sr-only\"> μB·B/ε<\/span><\/span>",
+"k61": "<span class=\"lt\">격자<\/span>",
+"k62": "<span class=\"lt\">프레임당 스윕<\/span>",
+"k63": "무작위 시작",
+"k64": "모두 위로",
+"k65": "스윕",
+"k66": "이 \\(T\\)에서 온사거 \\(|M|/N\\)",
+"k67": "스윕 한 번은 \\(N\\)번의 뒤집기 시도입니다. \\(T = 1\\)에서 무작위로 시작해 보세요: 완전히 자화된 상태에 이르는 대신, 격자가 큰 자구 두 개를 가진 준안정 상태에 갇히는 일이 많습니다. 어떤 상태가 확률이 높더라도 거기까지 가는 길은 실제 자석에서처럼 아주 오래 걸릴 수 있기 때문입니다. 온도가 낮을수록 클러스터가 커지고, \\(T_c\\) 근처에서는 격자 크기까지 온갖 크기의 클러스터가 있습니다.",
+"k68": "열역학량 측정",
+"k69": "강의의 파이썬 코드는 온도를 훑으면서 평형에 이르게 한 뒤 에너지, 자화, 열용량, 감수율의 평균을 냅니다. 여기서는 브라우저에서 더 작은 격자로 같은 일을 하며, 요동을 이용합니다: \\(C = (\\langle U^2\\rangle - \\langle U\\rangle^2)/k_{\\mathrm{B}}T^2\\), \\(\\chi_{\\mathrm{abs}} \\propto (\\langle M^2\\rangle - \\langle |M|\\rangle^2)/k_{\\mathrm{B}}T\\). \\(|M|\\)을 쓰는 이유는 \\(B = 0\\)의 유한한 격자가 가끔 \\(\\pm M\\) 사이를 뒤집히기 때문입니다: 표준적인 \\(\\chi \\propto \\langle M^2\\rangle - \\langle M\\rangle^2\\)은 \\(T_c\\) 아래에서 그 뒤집힘까지 셉니다. 다만 이것은 표준적인 응답이 아닙니다: 대칭적인 분포에서도 \\(\\langle |M|\\rangle^2 \\neq 0\\)이므로 \\(T_c\\) 위에서 더 작게 나옵니다. 그러니 진폭보다는 봉우리 위치를 보는 데 쓰세요.",
+"k70": "온도 훑기 실행",
+"k71": "24 × 24 격자, 온도 33개, 각 온도에서 평형화 600 스윕, 측정 1500 스윕. 초록: 온사거의 정확한 자화. 격자가 클수록 봉우리가 날카로워져 \\(T_c\\)에서의 참된 발산에 다가갑니다.",
+"k72": "상관과 척도 불변성",
+"k73": "문제 8.29는 상관 함수로 뭉침을 정량화합니다: 거리 \\(r\\)만큼 떨어진 쌍극자에 대해",
+"k74": "여기서 \\(\\xi\\)는 상관 길이입니다. \\(T = T_c\\)에서 \\(\\xi \\to \\infty\\)이므로 특성 척도가 없고, \\(T_c\\) 근처에서는 거듭제곱 법칙 \\(\\xi \\sim |T - T_c|^{-\\nu}\\)를 따릅니다. 이 값은 위의 실시간 시뮬레이션에서 행과 열을 따라 모든 쌍을 평균하여 계산합니다.",
+"k75": "온도",
+"k76": "상관 길이 \\(\\xi\\)",
+"k77": "\\(\\xi\\)는 \\(c(r)\\)가 \\(c(0)\\)의 \\(1/e\\)로 떨어지는 곳입니다. 현재 상태의 스냅숏이므로 요동합니다. \\(T_c\\) 근처에서는 격자 크기에 의해서만 제한됩니다.",
+"k78": "블록 스핀과 재규격화 군",
+"k79": "문제 8.32. 격자를 3 × 3 블록으로 나누고 각 블록을 다수결 규칙을 따르는 쌍극자 하나로 바꿉니다. 새 격자의 폭은 3분의 1이고, 다른 온도의 이징 격자처럼 보입니다. \\(T_c\\)에서 벗어나 있으면 변환을 반복할 때 계가 자명한 고정점, 즉 온도 0이나 무한대 중 하나로 갑니다. \\(T_c\\)에서는 척도가 없는 성질 때문에 계가 변환에 대해 불변입니다: 임계점 자체가 고정점입니다. 작은 규모의 세부 사항을 평균해 없애도 임계 거동은 변하지 않는데, 그래서 임계점 근처의 자석과 유체처럼 매우 다른 계들이 같은 임계 지수를 가집니다. 이것이 재규격화 군의 한 형태이며, 케네스 윌슨은 이 업적으로 1982년 노벨 물리학상을 받았습니다.",
+"k80": "위의 시뮬레이션을 270 × 270으로 두고 비교해 보세요: \\(T_c\\)보다 훨씬 아래에서는 블록이 더 균일해지고(유효 온도가 낮아짐), 훨씬 위에서는 더 무작위해지며(높아짐), \\(T_c\\) 근처에서는 통계적으로 원래 격자와 똑같아 보입니다.",
+"k81": "더 깊이",
+"k82": "이 페이지는 학부 과목 <a href=\"https://lshlj82.github.io/statphys2-GNU/\">통계물리학 2<\/a>의 이징 모형 입문입니다. 경상국립대학교 물리학과의 대학원 과목 두 개가 같은 모형을 훨씬 더 깊이 다루며, 아래의 각 페이지는 이 페이지의 한 절이 끝나는 곳에서 이어집니다.",
+"k83": "<a href=\"https://lshlj82.github.io/special-topics-in-complex-systems-GNU/\">복잡계 특론<\/a>",
+"k84": "K. Christensen and N. R. Moloney, <i>Complexity and Criticality<\/i> (Imperial College Press, 2005)를 따릅니다.",
+"k85": "<a class=\"t\" href=\"https://lshlj82.github.io/Ising-model-preliminary/\">이징 모형: 입문<\/a>\n      <span class=\"d\">모형, 해밀토니언과 분배함수, 그리고 상호작용하는 이진 스핀이 왜 상전이의 표준적인 시험대인지.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#model\">모형<\/a> · <a href=\"https://github.com/lshlj82/Ising-model-preliminary\">소스<\/a><\/span>",
+"k86": "<a class=\"t\" href=\"https://lshlj82.github.io/Ising-model-1D/\">1차원 이징 모형<\/a>\n      <span class=\"d\">1차원의 전달 행렬 풀이, 그리고 0이 아닌 어떤 온도에서도 질서 상이 없는 이유.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#oned\">1차원의 정확한 풀이<\/a> · <a href=\"https://github.com/lshlj82/Ising-model-1D\">소스<\/a><\/span>",
+"k87": "<a class=\"t\" href=\"https://lshlj82.github.io/Ising-model-MF-Landau/\">이징 모형의 평균장 이론과 란다우 이론<\/a>\n      <span class=\"d\">자체 일관적 평균장 방정식, 질서 변수로 전개한 란다우 자유 에너지, 그리고 평균장 임계 지수.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#mfa\">평균장 근사<\/a> · <a href=\"https://github.com/lshlj82/Ising-model-MF-Landau\">소스<\/a><\/span>",
+"k88": "<a class=\"t\" href=\"https://lshlj82.github.io/Ising-model-2D/\">2차원 이징 모형<\/a>\n      <span class=\"d\">정사각 격자의 몬테카를로 시뮬레이션, 온사거의 정확한 임계 온도, 상전이 근처의 유한 크기 거동.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#mc\">몬테카를로 시뮬레이션<\/a> · <a href=\"https://github.com/lshlj82/Ising-model-2D\">소스<\/a><\/span>",
+"k89": "<a class=\"t\" href=\"https://lshlj82.github.io/Ising-model-RG/\">이징 모형의 재규격화 군<\/a>\n      <span class=\"d\">블록 스핀, 거칠게 만들기를 반복할 때의 결합 상수의 흐름, 고정점, 선형화한 흐름에서 얻는 임계 지수.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#clusters\">상관과 척도 불변성<\/a> · <a href=\"https://github.com/lshlj82/Ising-model-RG\">소스<\/a><\/span>",
+"k90": "<a href=\"https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/\">상전이와 임계 현상<\/a>",
+"k91": "N. Goldenfeld, <i>Lectures on Phase Transitions and the Renormalization Group<\/i> (Addison-Wesley, 1992)를 따릅니다.",
+"k92": "<a class=\"t\" href=\"https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02a-phase-transitions-in-principle.html\">2장 1부: 원리적으로 상전이는 어떻게 일어나는가<\/a>\n      <span class=\"d\">열역학적 극한, 4 × 4 격자의 \\(2^{16}\\)개 모든 상태의 정확한 나열, 자유 에너지의 볼록성, 대칭, 그리고 1차원의 자구벽.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#model\">모형<\/a> · <a href=\"#oned\">1차원의 정확한 풀이<\/a> · <a href=\"https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02a-phase-transitions-in-principle.html\">소스<\/a><\/span>",
+"k93": "<a class=\"t\" href=\"https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch02b-symmetry-breaking-and-lattice-gases.html\">2장 2부: 대칭 깨짐, 에르고딕성, 격자 기체<\/a>\n      <span class=\"d\">2차원 질서에 대한 파이얼스 논증, 자발 대칭 깨짐, 에르고딕성 깨짐, 그리고 격자 기체가 이징 자석인 이유.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#mfa\">평균장 근사<\/a> · <a href=\"#mc\">몬테카를로 시뮬레이션<\/a> · <a href=\"https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch02b-symmetry-breaking-and-lattice-gases.html\">소스<\/a><\/span>",
+"k94": "<a class=\"t\" href=\"https://lshlj82.github.io/phase-transition-and-critical-phenomena-GNU/ch03-phase-transitions-in-practice.html\">3장: 실제로 상전이는 어떻게 일어나는가<\/a>\n      <span class=\"d\">전달 행렬에 의한 1차원의 정확한 풀이, 공간 상관, 저온 전개, 바이스 평균장 이론과 그 임계 지수, 그리고 네트워크 위의 이징 모형.<\/span>\n      <span class=\"meta\">이어지는 절: <a href=\"#oned\">1차원의 정확한 풀이<\/a> · <a href=\"#mfa\">평균장 근사<\/a> · <a href=\"#clusters\">상관과 척도 불변성<\/a> · <a href=\"https://github.com/lshlj82/phase-transition-and-critical-phenomena-GNU/blob/main/ch03-phase-transitions-in-practice.html\">소스<\/a><\/span>",
+"k95": "상호작용하는 입자계에 관한 이상훈 교수의 강의 노트(8.2절, 강자성체의 이징 모형, 문제 8.15, 8.17, 8.18, 8.22, 8.24, 8.29, 8.32 포함)를 바탕으로 Claude Opus 5.5가 만들었습니다.",
+"k96": "온도의 단위는 \\(\\varepsilon/k_{\\mathrm{B}}\\)입니다. 몬테카를로 엔진은 주기 경계 조건의 간단한 메트로폴리스 구현입니다. 수식은 MathJax로 조판했습니다."
+};
+(function(){
+  // English / 한국어 switch shared by the course demos; the choice is remembered across pages
+  var KEY='lshlj82-demo-lang', root=document.documentElement, KO=window.I18N_KO||{}, EN={};
+  var els=[].slice.call(document.querySelectorAll('[data-k]'));
+  els.forEach(function(e){EN[e.getAttribute('data-k')]=e.innerHTML;});
+  var titleEN=document.title;
+  var btn=document.createElement('button');btn.id='langBtn';btn.type='button';document.body.appendChild(btn);
+  function typeset(list){
+    if(!list.length)return;
+    if(window.MathJax&&MathJax.typesetPromise){var go=function(){MathJax.typesetPromise(list).catch(function(){});};
+      if(MathJax.startup&&MathJax.startup.promise)MathJax.startup.promise.then(go);else go();}
+    if(window.renderMathInElement&&window.KATEX_OPTS)list.forEach(function(e){try{renderMathInElement(e,window.KATEX_OPTS)}catch(_){}}); 
+  }
+  function apply(l,first){
+    window.LANG=l;root.dataset.lang=l;root.lang=l;var changed=[];
+    els.forEach(function(e){var k=e.getAttribute('data-k'),s=(l==='ko'&&KO[k]!=null)?KO[k]:EN[k];if(e.innerHTML!==s){e.innerHTML=s;changed.push(e);}});
+    document.title=(l==='ko'&&KO.__title)?KO.__title:titleEN;
+    btn.textContent=l==='ko'?'EN':'한국어';btn.setAttribute('aria-label',l==='ko'?'View in English':'한국어로 보기');btn.title=btn.getAttribute('aria-label');
+    btn.setAttribute('lang',l==='ko'?'en':'ko');
+    if(!first)typeset(changed);
+    window.dispatchEvent(new CustomEvent('langchange',{detail:{lang:l}}));
+    // canvases drawn before the Korean web font arrives are redrawn once it has loaded
+    if(l==='ko'&&document.fonts&&!document.fonts.check('16px "IBM Plex Sans KR"','가'))document.fonts.load('16px "IBM Plex Sans KR"','가').then(function(){if(window.LANG==='ko')window.dispatchEvent(new CustomEvent('langchange',{detail:{lang:'ko'}}));}).catch(function(){});
+  }
+  btn.addEventListener('click',function(){var n=window.LANG==='ko'?'en':'ko';try{localStorage.setItem(KEY,n)}catch(e){}apply(n,false);});
+  apply(window.LANG||'en',true);
+})();
+</script>
+<!-- lang-toggle:body-end -->
 </body>
 </html>
